@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'services/storage_service.dart';
+import 'services/expense_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final db = await Storage.initialize('expense_database');
+  ExpenseDatabaseHelper.init();
 
   runApp(const MainApp());
 }
