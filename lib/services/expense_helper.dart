@@ -1,3 +1,5 @@
+import 'package:expense_tracker_app/models/category.dart';
+import 'package:expense_tracker_app/models/transaction_type.dart';
 import 'package:expense_tracker_app/services/storage.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:sqflite/sqflite.dart';
@@ -18,7 +20,7 @@ class ExpensesHelper {
     _db = await Storage.init("expenses_database");
   }
 
-  static Future<List<Map<String,dynamic>>> read() async {
+  static Future<List<Map<String, dynamic>>> read() async {
     Database db = await database;
     return await db.query('Expenses');
   }
@@ -32,6 +34,37 @@ class ExpensesHelper {
       "Category": e.category.label,
       "TimeStamp": e.timestamp.toIso8601String(),
     });
+  }
+
+  static Future<List<Expense>> retrieve(int? amt) async {
+    Database db = await database;
+    List<Expense> result = [];
+    List<Map<String, dynamic>> list;
+
+    if (amt == null) {
+      list = await db.query("Expenses", orderBy: 'ID DESC');
+    } else {
+      list = await db.query('Expenses', orderBy: 'ID DESC', limit: amt);
+    }
+
+    for (Map<String, dynamic> e in list) {
+      String text = e['Desc'];
+      double amount = e['Amount'];
+      String tempType = e['Type'];
+      String tempCategory = e['Category'];
+      DateTime time = DateTime.parse(e['TimeStamp']);
+
+      TType type = TType.values.firstWhere((t) => t.label == tempType);
+
+      Category category = Category.values.firstWhere(
+        (c) => c.label == tempCategory,
+      );
+
+      Expense exp = Expense(text, amount, type, category, time);
+      result.add(exp);
+    }
+
+    return result;
   }
 
   static Future<double> income() async {
@@ -64,7 +97,11 @@ class ExpensesHelper {
     return 0.0;
   }
 
-  static Future<double> getExpenseAmountFor(String category, DateTime start, DateTime end) async {
+  static Future<double> getExpenseAmountFor(
+    String category,
+    DateTime start,
+    DateTime end,
+  ) async {
     Database db = await database;
     final List<Map<String, Object?>> result = await db.rawQuery(
       'SELECT SUM(Amount) AS Total FROM Expenses WHERE Type = ? AND Category = ? AND TimeStamp >= ? AND TimeStamp <= ?',
