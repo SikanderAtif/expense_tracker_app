@@ -1,0 +1,72 @@
+{    
+    "appTitle": "Expenses",
+    "@appTitle": {
+        "description": "Text for App Title"
+    },
+
+    "homeTitle": "Dashboard",
+    "@homeTitle": {
+        "description": "AppBar Title text for home_screen.dart"
+    },
+
+    "homeTabTitle": "HOME",
+    "@homeTabTitle": {
+        "description": "Text for Home Tab Title in home_screen.dart"
+    },
+
+    "statsTabTitle": "STATS",
+    "@statsTabTitle": {
+        "description": "Text for Stats Tab Title in home_screen.dart"
+    },
+
+    "budgetTabTitle": "BUDGET",
+    "@budgetTabTitle": {
+        "description": "Text for Budget Tab Title in home_screen.dart"
+    },
+
+    "profileTabTitle": "PROFILE",
+    "@profileTabTitle": {
+        "description": "Text for Profile Tab Title in home_screen.dart"
+    },
+
+    "totalBalance": "Total Balance",
+    "@totalBalance": {
+        "description": "Text for the total balance Title in home_page_tab.dart"
+    },
+
+    "income": "INCOME",
+    "@income": {
+        "description": "Text for the income title"
+    },
+
+    "expenses": "{count, plural, =1{EXPENSE} other{EXPENSES}}",
+    "@expenses": {
+        "description": "Text for the expenses title",
+        "placeholders": {
+            "count": {
+                "type": "num",
+                "format": "compact"
+            }
+        }
+    },
+
+    "periodWeek": "Week",
+    "@periodWeek": {
+        "description": "Text for week period filter in home_page_tab.dart"
+    },
+    
+    "periodMonth": "Month",
+    "@periodMonth": {
+        "description": "Text for month period filter in home_page_tab.dart"
+    },
+
+    "periodYear": "Year",
+    "@periodYear": {
+        "description": "Text for year period filter in home_page_tab.dart"
+    },
+
+    "addTPTitle": "Add Transaction",
+    "@addTPTitle": {
+        "description": "Text for the app bar title of Add Transaction Page"
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "appTitle": "نفقات",
+    "homeTitle": "لوحة المعلومات",
+    "homeTabTitle": "بيت",
+    "statsTabTitle": "الإحصائيات",
+    "budgetTabTitle": "ميزانية",
+    "profileTabTitle": "حساب تعريفي",
+    "income": "دخل",
+    
+    "expenses": "{count, plural, =1{نفقة} other{نفقات}}",
+    "@expenses": {
+        "description": "Text for the expenses title",
+        "placeholders": {
+            "count": {
+                "type": "num",
+                "format": "compact"
+            }
+         }
+    },
+    
+    "totalBalance": "إجمالي الرصيد",
+    "periodWeek": "أسبوع",
+    "periodMonth": "شهر",
+    "periodYear": "سنة",
+    "addTPTitle": "إضافة معاملة"
+}
