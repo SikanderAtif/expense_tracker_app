@@ -42,10 +42,74 @@ class ExpensesHelper {
     List<Map<String, dynamic>> list;
 
     if (amt == null) {
-      list = await db.query("Expenses", orderBy: 'ID DESC');
+      list = await db.query("Expenses", orderBy: 'TimeStamp DESC');
     } else {
-      list = await db.query('Expenses', orderBy: 'ID DESC', limit: amt);
+      list = await db.query('Expenses', orderBy: 'TimeStamp DESC', limit: amt);
     }
+
+    for (Map<String, dynamic> e in list) {
+      String text = e['Desc'];
+      double amount = e['Amount'];
+      String tempType = e['Type'];
+      String tempCategory = e['Category'];
+      DateTime time = DateTime.parse(e['TimeStamp']);
+
+      TType type = TType.values.firstWhere((t) => t.label == tempType);
+
+      Category category = Category.values.firstWhere(
+        (c) => c.label == tempCategory,
+      );
+
+      Expense exp = Expense(text, amount, type, category, time);
+      result.add(exp);
+    }
+
+    return result;
+  }
+
+static Future<List<Expense>> retrieveBy(String filterType, String filter) async {
+    Database db = await database;
+    List<Expense> result = [];
+    List<Map<String, dynamic>> list;
+
+    list = await db.query(
+      'Expenses',
+      where: '$filterType = ?',
+      whereArgs: [filter],
+      orderBy: 'TimeStamp DESC',
+    );
+
+    for (Map<String, dynamic> e in list) {
+      String text = e['Desc'];
+      double amount = e['Amount'];
+      String tempType = e['Type'];
+      String tempCategory = e['Category'];
+      DateTime time = DateTime.parse(e['TimeStamp']);
+
+      TType type = TType.values.firstWhere((t) => t.label == tempType);
+
+      Category category = Category.values.firstWhere(
+        (c) => c.label == tempCategory,
+      );
+
+      Expense exp = Expense(text, amount, type, category, time);
+      result.add(exp);
+    }
+
+    return result;
+  }
+
+  static Future<List<Expense>> search(String filter) async {
+    Database db = await database;
+        List<Expense> result = [];
+    List<Map<String, dynamic>> list;
+
+    list = await db.query(
+      'Expenses',
+      where: 'Desc LIKE ?',
+      whereArgs: ['%$filter%'],
+      orderBy: 'TimeStamp DESC',
+    );
 
     for (Map<String, dynamic> e in list) {
       String text = e['Desc'];
@@ -121,13 +185,4 @@ class ExpensesHelper {
     print("Successfully Dropped Database");
   }
 
-  /*
-  static Future<Map<String, dynamic>> read(int id) async {
-    Database db = await database;
-    return db.query(
-      "Expenses",
-      
-    )
-  }
-*/
 }

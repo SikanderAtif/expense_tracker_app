@@ -1,9 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:expense_tracker_app/models/expense.dart';
-import 'package:expense_tracker_app/models/transaction_type.dart';
+import 'package:expense_tracker_app/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class LatestTransactions extends StatelessWidget {
   final void Function() _openTransactionsScreen;
@@ -42,43 +41,7 @@ class LatestTransactions extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemCount: expenses.length,
           itemBuilder: (BuildContext context, int index) {
-            return Column(
-              children: [
-                ListTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  tileColor: color.secondary.withOpacity(0.1),
-                  leading: Icon(
-                    expenses[index].category.icon,
-                    color: expenses[index].category.color,
-                  ),
-                  title: Text(
-                    expenses[index].text,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: color.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    DateFormat('MMM d . H:m').format(expenses[index].timestamp),
-                    style: TextStyle(color: color.secondary),
-                  ),
-                  trailing: expenses[index].type.label == TType.expense.label
-                      ? Text(
-                          '-PKR ${expenses[index].amount}',
-                          style: TextStyle(color: Colors.red.shade700),
-                        )
-                      : Text(
-                          '+PKR ${expenses[index].amount}',
-                          style: TextStyle(color: Colors.green.shade700),
-                        ),
-                ),
-                SizedBox(height: 16),
-              ],
-            );
+            return TransactionItem(expenses: expenses, index: index);
           },
         ),
       ],
