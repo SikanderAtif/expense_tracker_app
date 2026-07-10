@@ -56,7 +56,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       return await ExpensesHelper.search(_selectedFilter);
     }
 
-    return await ExpensesHelper.retrieveBy(filterType!, _selectedFilter);
+    return await ExpensesHelper.retrieveBy(filterType, _selectedFilter);
   }
 
   @override
@@ -74,6 +74,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         centerTitle: true,
         title: Text('All Transactions'),
         bottom: PreferredSize(
