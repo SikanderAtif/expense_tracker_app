@@ -67,7 +67,10 @@ class ExpensesHelper {
     return result;
   }
 
-static Future<List<Expense>> retrieveBy(String filterType, String filter) async {
+  static Future<List<Expense>> retrieveBy(
+    String filterType,
+    String filter,
+  ) async {
     Database db = await database;
     List<Expense> result = [];
     List<Map<String, dynamic>> list;
@@ -101,7 +104,7 @@ static Future<List<Expense>> retrieveBy(String filterType, String filter) async 
 
   static Future<List<Expense>> search(String filter) async {
     Database db = await database;
-        List<Expense> result = [];
+    List<Expense> result = [];
     List<Map<String, dynamic>> list;
 
     list = await db.query(
@@ -180,9 +183,43 @@ static Future<List<Expense>> retrieveBy(String filterType, String filter) async 
     return 0.0;
   }
 
+  static Future<List<Expense>> getSpendingFlow(
+    DateTime start,
+    DateTime end,
+  ) async {
+    Database db = await database;
+    List<Expense> data = [];
+    List<Map<String, dynamic>> temp;
+
+    temp = await db.query(
+      'Expenses',
+      where: 'TimeStamp >= ? AND TimeStamp <= ?',
+      whereArgs: [start.toIso8601String(), end.toIso8601String()],
+      orderBy: 'TimeStamp DESC',
+    );
+
+    for (Map<String, dynamic> t in temp) {
+      String text = t['Desc'];
+      double amount = t['Amount'];
+      String sType = t['Type'];
+      String sCategory = t['Category'];
+      DateTime timestamp = DateTime.parse(t['TimeStamp']);
+
+      TType type = TType.values.firstWhere((t) => t.label == sType);
+
+      Category category = Category.values.firstWhere(
+        (c) => c.label == sCategory,
+      );
+
+      Expense e = Expense(text, amount, type, category, timestamp);
+      data.add(e);
+    }
+
+    return data;
+  }
+
   static Future<void> dropDB() async {
     await Storage.removeDB('expenses_database');
     print("Successfully Dropped Database");
   }
-
 }

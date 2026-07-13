@@ -1,4 +1,5 @@
 import 'package:expense_tracker_app/l10n/app_localizations.dart';
+import 'package:expense_tracker_app/screens/stats_page_tab.dart';
 import 'package:flutter/material.dart';
 import 'home_page_tab.dart';
 
@@ -42,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         physics: const NeverScrollableScrollPhysics(),
         children: const [
           HomePage(),
+          StatsPage(),
         ],
       ),
       bottomNavigationBar: NavigationBar(

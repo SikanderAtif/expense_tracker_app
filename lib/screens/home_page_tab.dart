@@ -104,6 +104,7 @@ class _HomePageState extends State<HomePage>
 
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
