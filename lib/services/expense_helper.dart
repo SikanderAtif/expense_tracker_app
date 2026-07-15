@@ -37,6 +37,29 @@ class ExpensesHelper {
     });
   }
 
+  static Future<void> update(Expense e) async {
+    Database db = await database;
+    await db.update("Expenses", {
+      "Desc": e.text,
+      "Amount": e.amount,
+      "Type": e.type.label,
+      "Category": e.category.label,
+      "TimeStamp": e.timestamp.toIso8601String(),
+      },
+      where: 'ID = ?',
+      whereArgs: [e.id], 
+    );
+  }
+
+  static Future<void> remove(Expense e) async {
+    Database db = await database;
+    await db.delete(
+      'Expenses',
+      where: 'ID = ?',
+      whereArgs: [e.id],
+    );
+  }
+
   static Future<void> insertBudget(
     Category c,
     double limit,
@@ -113,6 +136,7 @@ class ExpensesHelper {
     }
 
     for (Map<String, dynamic> e in list) {
+      int id = e['ID'];
       String text = e['Desc'];
       double amount = e['Amount'];
       String tempType = e['Type'];
@@ -126,6 +150,8 @@ class ExpensesHelper {
       );
 
       Expense exp = Expense(text, amount, type, category, time);
+      exp.id = id;
+
       result.add(exp);
     }
 
@@ -148,6 +174,7 @@ class ExpensesHelper {
     );
 
     for (Map<String, dynamic> e in list) {
+      int id = e['ID'];
       String text = e['Desc'];
       double amount = e['Amount'];
       String tempType = e['Type'];
@@ -161,6 +188,7 @@ class ExpensesHelper {
       );
 
       Expense exp = Expense(text, amount, type, category, time);
+      exp.id = id;
       result.add(exp);
     }
 

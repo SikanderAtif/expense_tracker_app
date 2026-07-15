@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionItem extends StatelessWidget {
-  final List<Expense> expenses;
-  final int index;
+  final Expense expense;
+  final void Function(Expense, bool) _openAddTransactionScreen;
 
   const TransactionItem({
     super.key,
-    required this.expenses,
-    required this.index,
+    required this.expense,
+    required this._openAddTransactionScreen,
   });
 
   @override
@@ -22,31 +22,32 @@ class TransactionItem extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          onTap: () {_openAddTransactionScreen(expense, true);},
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
           tileColor: color.secondary.withOpacity(0.1),
           leading: Icon(
-            expenses[index].category.icon,
-            color: expenses[index].category.color,
+            expense.category.icon,
+            color: expense.category.color,
           ),
           title: Text(
-            expenses[index].text,
+            expense.text,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(color: color.primary, fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            DateFormat(expenses[index].timestamp.hour == 0 ? "MMM dd" : 'MMM dd . HH:mm').format(expenses[index].timestamp),
+            DateFormat(expense.timestamp.hour == 0 ? "MMM dd" : 'MMM dd . HH:mm').format(expense.timestamp),
             style: TextStyle(color: color.secondary),
           ),
-          trailing: expenses[index].type.label == TType.expense.label
+          trailing: expense.type.label == TType.expense.label
               ? Text(
-                  '-PKR ${expenses[index].amount}',
+                  '-PKR ${expense.amount}',
                   style: TextStyle(color: Colors.red.shade700),
                 )
               : Text(
-                  '+PKR ${expenses[index].amount}',
+                  '+PKR ${expense.amount}',
                   style: TextStyle(color: Colors.green.shade700),
                 ),
         ),

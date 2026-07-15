@@ -14,18 +14,30 @@ class BudgetPage extends StatefulWidget {
   State<BudgetPage> createState() => _BudgetPageState();
 }
 
-class _BudgetPageState extends State<BudgetPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _BudgetPageState extends State<BudgetPage> {
+  late Future<List<dynamic>> _expenseFuture;
 
-  void _openSetBudgetScreen(double budget, {bool update = false}) {
-    Navigator.push(
+  @override
+  void initState() {
+    super.initState();
+    _expenseFuture = _initBudget();
+  }
+
+  void _refreshData() {
+    setState(() {
+      _expenseFuture = _initBudget();
+    });
+  }
+
+  void _openSetBudgetScreen(double budget, {bool update = false}) async {
+    await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SetBudgetScreen(budget: budget, update: update)),
+      MaterialPageRoute(
+        builder: (context) => SetBudgetScreen(budget: budget, update: update),
+      ),
     );
 
-    setState(() {});
+    _refreshData();
   }
 
   Future<List<dynamic>> _initBudget() async {
@@ -53,75 +65,82 @@ class _BudgetPageState extends State<BudgetPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final ColorScheme color = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(title: Text('Budget')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: FutureBuilder(
-            future: _initBudget(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _refreshData();
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: FutureBuilder(
+              future: _expenseFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-              if (snapshot.hasError) {
-                return Center(child: Text('Error Retrieving Data'));
-              }
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error Retrieving Data'));
+                }
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MonthlyBudgetCard(
-                    budget: snapshot.data![0],
-                    spent: snapshot.data![1],
-                    remaining: snapshot.data![2],
-                  ),
-                  SizedBox(height: 24),
-                  Text(
-                    'By Category',
-                    style: TextStyle(
-                      color: color.primary,
-                      fontWeight: FontWeight.bold,
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MonthlyBudgetCard(
+                      budget: snapshot.data![0],
+                      spent: snapshot.data![1],
+                      remaining: snapshot.data![2],
                     ),
-                  ),
-                  SizedBox(height: 12),
-                  snapshot.data![4].isEmpty
-                      ? EmptyBudgetState(
-                          openSetBudgetScreen: _openSetBudgetScreen,
-                          budget: snapshot.data![0],
-                        )
-                      : CategoryList(
-                          spent: snapshot.data![3],
-                          list: snapshot.data![4],
-                        ),
-                  SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _openSetBudgetScreen(snapshot.data![0], update: true);
-                          },
-                          child: Text(
-                            'Set Your Budget',
-                            style: TextStyle(color: color.primary),
+                    SizedBox(height: 24),
+                    Text(
+                      'By Category',
+                      style: TextStyle(
+                        color: color.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    snapshot.data![4].isEmpty
+                        ? EmptyBudgetState(
+                            openSetBudgetScreen: _openSetBudgetScreen,
+                            budget: snapshot.data![0],
+                          )
+                        : CategoryList(
+                            spent: snapshot.data![3],
+                            list: snapshot.data![4],
+                          ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _openSetBudgetScreen(
+                                snapshot.data![0],
+                                update: true,
+                              );
+                            },
+                            child: Text(
+                              'Set Your Budget',
+                              style: TextStyle(color: color.primary),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                ],
-              );
-            },
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

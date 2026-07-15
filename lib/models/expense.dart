@@ -2,6 +2,7 @@ import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/models/transaction_type.dart';
 
 class Expense {
+  int? id;
   String text = '';
   double amount = 0;
   TType type = TType.expense;

@@ -25,6 +25,22 @@ class _HomePageState extends State<HomePage>
   Period _selectedPeriod = Period.week;
   DateTime start = DateTime.now().currentWeekRange.start;
   DateTime end = DateTime.now().currentWeekRange.end;
+  late Future<List<dynamic>> _expenseFuture;
+  late Future<List<dynamic>> _balanceFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _balanceFuture = _initBalance();
+    _expenseFuture = _initExpense();
+  }
+
+  void _refreshData() {
+    setState(() {
+      _balanceFuture = _initBalance();
+      _expenseFuture = _initExpense();
+    });
+  }
 
   void _setPeriod(Period p) {
     setState(() {
@@ -42,25 +58,27 @@ class _HomePageState extends State<HomePage>
       }
 
       _selectedPeriod = p;
+      _balanceFuture = _initBalance();
+      _expenseFuture = _initExpense();
     });
   }
 
-  void _openAddTransactionPage() {
-    Navigator.push(
+  void _openAddTransactionScreen(Expense? expense, bool update) async {
+    await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AddTransactionPage()),
+      MaterialPageRoute(builder: (context) => AddTransactionScreen(expense: expense, update: update)),
     );
 
-    setState(() {});
+    _refreshData();
   }
 
-  void _openTransactionsScreen() {
-    Navigator.push(
+  void _openTransactionsScreen() async {
+    await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const TransactionsScreen()),
     );
 
-    setState(() {});
+    _refreshData();
   }
 
   Future<List<dynamic>> _initBalance() async {
@@ -124,7 +142,7 @@ class _HomePageState extends State<HomePage>
           child: Column(
             children: [
               FutureBuilder<List<dynamic>>(
-                future: _initBalance(),
+                future: _balanceFuture,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(child: Text('Error Retrieving Data'));
@@ -147,7 +165,7 @@ class _HomePageState extends State<HomePage>
               ),
               SizedBox(height: 16),
               FutureBuilder<List<dynamic>>(
-                future: _initExpense(),
+                future: _expenseFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -170,6 +188,7 @@ class _HomePageState extends State<HomePage>
                       SizedBox(height: 36),
                       LatestTransactions(
                         openTransactionsScreen: _openTransactionsScreen,
+                        openAddTransactionScreen: _openAddTransactionScreen,
                         expenses: snapshot.data![2],
                       ),
                     ],
@@ -182,7 +201,7 @@ class _HomePageState extends State<HomePage>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _openAddTransactionPage(),
+        onPressed: () => _openAddTransactionScreen(null, false),
         child: Icon(Icons.add),
       ),
     );

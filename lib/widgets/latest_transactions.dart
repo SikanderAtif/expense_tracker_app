@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 
 class LatestTransactions extends StatelessWidget {
   final void Function() _openTransactionsScreen;
+  final void Function(Expense, bool) _openAddTransactionScreen;
   final List<Expense> expenses;
 
   const LatestTransactions({
     super.key,
     required this._openTransactionsScreen,
+    required this._openAddTransactionScreen,
     required this.expenses,
   });
 
@@ -41,7 +43,7 @@ class LatestTransactions extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemCount: expenses.length,
           itemBuilder: (BuildContext context, int index) {
-            return TransactionItem(expenses: expenses, index: index);
+            return TransactionItem(expense: expenses[index], openAddTransactionScreen: _openAddTransactionScreen);
           },
         ),
       ],

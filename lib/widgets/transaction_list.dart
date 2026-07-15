@@ -5,8 +5,9 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Expense> _expenses;
+  final void Function(Expense, bool) _openAddTransactionScreen;
 
-  const TransactionList({super.key, required this._expenses});
+  const TransactionList({super.key, required this._expenses, required this._openAddTransactionScreen});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class TransactionList extends StatelessWidget {
                       ],
                     )
                   : SizedBox(height: 1),
-              TransactionItem(expenses: _expenses, index: index),
+              TransactionItem(expense: _expenses[index], openAddTransactionScreen: _openAddTransactionScreen),
             ],
           );
         },

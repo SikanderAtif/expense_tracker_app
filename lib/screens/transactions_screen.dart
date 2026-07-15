@@ -3,6 +3,7 @@
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/models/transaction_type.dart';
+import 'package:expense_tracker_app/screens/add_transaction.dart';
 import 'package:expense_tracker_app/services/expense_helper.dart';
 import 'package:expense_tracker_app/widgets/empty_state.dart';
 import 'package:expense_tracker_app/widgets/transaction_list.dart';
@@ -18,18 +19,42 @@ class TransactionsScreen extends StatefulWidget {
 class _TransactionsScreenState extends State<TransactionsScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _selectedFilter = 'All';
+  late Future<List<Expense>> _expenseFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _expenseFuture = _initExpense();
+  }
+
+  void _refreshData() {
+    setState(() {
+      _expenseFuture = _initExpense();
+    });
+  }
+
+  void _openAddTransactionScreen(Expense expense, bool update) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddTransactionScreen(expense: expense, update: update)),
+    );
+
+    _refreshData();
+  }
 
   void _filterSearch() {
     String text = _searchController.text.trim();
 
     setState(() {
       _selectedFilter = text;
+      _expenseFuture = _initExpense();
     });
   }
 
   void _setFilter(String filter) {
     setState(() {
       _selectedFilter = filter;
+      _expenseFuture = _initExpense();
     });
   }
 
@@ -174,7 +199,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         ),
       ),
       body: FutureBuilder<List<Expense>>(
-        future: _initExpense(),
+        future: _expenseFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -184,11 +209,11 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             return Center(child: Text('Error Retrieving Data'));
           }
 
-          if (snapshot.data!.isEmpty) {
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return EmptyState();
           }
 
-          return TransactionList(expenses: snapshot.data!);
+          return TransactionList(expenses: snapshot.data!, openAddTransactionScreen: _openAddTransactionScreen);
         },
       ),
     );

@@ -15,13 +15,16 @@ class StatsPage extends StatefulWidget {
   State<StatsPage> createState() => _StatsPageState();
 }
 
-class _StatsPageState extends State<StatsPage>
-    with AutomaticKeepAliveClientMixin {
+class _StatsPageState extends State<StatsPage> {
   Period _selectedPeriod = Period.week;
   late List<Expense> _data;
+  late Future<List<dynamic>> _dataFuture;
 
   @override
-  bool get wantKeepAlive => true;
+  void initState() {
+    super.initState();
+    _dataFuture = _initData();
+  }
 
   Future<List<dynamic>> _initData() async {
     final List<String> labels = [];
@@ -100,7 +103,6 @@ class _StatsPageState extends State<StatsPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final ColorScheme color = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -119,6 +121,7 @@ class _StatsPageState extends State<StatsPage>
                       onSelectionChanged: (Set<Period> newSelection) {
                         setState(() {
                           _selectedPeriod = newSelection.first;
+                          _dataFuture = _initData();
                         });
                       },
                       segments: [
@@ -142,7 +145,7 @@ class _StatsPageState extends State<StatsPage>
               const SizedBox(height: 24),
 
               FutureBuilder<List<dynamic>>(
-                future: _initData(),
+                future: _dataFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());

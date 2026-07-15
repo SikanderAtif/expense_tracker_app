@@ -7,21 +7,36 @@ import 'package:expense_tracker_app/models/transaction_type.dart';
 import 'package:expense_tracker_app/services/expense_helper.dart';
 import 'package:expense_tracker_app/widgets/grid_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-class AddTransactionPage extends StatefulWidget {
-  const AddTransactionPage({super.key});
+class AddTransactionScreen extends StatefulWidget {
+  final Expense? expense;
+  final bool update;
+  const AddTransactionScreen({super.key, this.expense, this.update = false});
 
   @override
-  State<AddTransactionPage> createState() => _AddTransactionPageState();
+  State<AddTransactionScreen> createState() => _AddTransactionScreenState();
 }
 
-class _AddTransactionPageState extends State<AddTransactionPage> {
+class _AddTransactionScreenState extends State<AddTransactionScreen> {
   TType _transactionType = TType.expense;
   final TextEditingController _amountController = TextEditingController();
   Category _selectedCategory = Category.food;
   final TextEditingController _textController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.update) {
+      _transactionType = widget.expense!.type;
+      _amountController.text = widget.expense!.amount.toStringAsFixed(2);
+      _selectedCategory = widget.expense!.category;
+      _textController.text = widget.expense!.text;
+      _selectedDate = widget.expense!.timestamp;
+    }
+  }
 
   void _setItem(Category item) {
     setState(() {
@@ -48,6 +63,11 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     });
   }
 
+  Future<void> _removeExpense() async {
+    await ExpensesHelper.remove(widget.expense!);
+    Navigator.pop(context);
+  }
+
   Future<void> _saveExpense() async {
     String text = _textController.text.trim();
     double amt = double.parse(_amountController.text.trim());
@@ -58,7 +78,13 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
       _selectedCategory,
       _selectedDate,
     );
-    await ExpensesHelper.insert(expense);
+
+    if (widget.update) {
+      expense.id = widget.expense!.id;
+      await ExpensesHelper.update(expense);
+    } else {
+      await ExpensesHelper.insert(expense);
+    }
     Navigator.pop(context);
   }
 
@@ -70,10 +96,17 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          locale.addTPTitle,
-          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
+        title: widget.update
+            ? Text('Update Transaction')
+            : Text(locale.addTPTitle),
+        actions: [
+          widget.update
+              ? IconButton(
+                  onPressed: _removeExpense,
+                  icon: Icon(Icons.delete_outlined, color: Colors.red.shade700),
+                )
+              : SizedBox(width: 0),
+        ],
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -140,9 +173,14 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                             controller: _amountController,
                             style: const TextStyle(fontSize: 28),
                             textAlign: TextAlign.center,
-                            keyboardType: const TextInputType.numberWithOptions(
+                            keyboardType: TextInputType.numberWithOptions(
                               decimal: true,
                             ),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d*\.?\d{0,2}'),
+                              ),
+                            ],
                           ),
                         ),
                       ],
