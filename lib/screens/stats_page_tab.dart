@@ -12,10 +12,10 @@ class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
 
   @override
-  State<StatsPage> createState() => _HomePageState();
+  State<StatsPage> createState() => _StatsPageState();
 }
 
-class _HomePageState extends State<StatsPage>
+class _StatsPageState extends State<StatsPage>
     with AutomaticKeepAliveClientMixin {
   Period _selectedPeriod = Period.week;
   late List<Expense> _data;

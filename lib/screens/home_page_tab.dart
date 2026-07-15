@@ -104,14 +104,10 @@ class _HomePageState extends State<HomePage>
 
     return Scaffold(
       appBar: AppBar(
-        scrolledUnderElevation: 0.0,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              AppLocalizations.of(context)!.homeTitle,
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
+            Text(AppLocalizations.of(context)!.homeTitle),
             Text(
               DateFormat('MMMM y').format(DateTime.now()),
               style: TextStyle(
@@ -153,7 +149,7 @@ class _HomePageState extends State<HomePage>
               FutureBuilder<List<dynamic>>(
                 future: _initExpense(),
                 builder: (context, snapshot) {
-                  if(snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   }
 
@@ -172,7 +168,10 @@ class _HomePageState extends State<HomePage>
                         expenseData: snapshot.data![0],
                       ),
                       SizedBox(height: 36),
-                      LatestTransactions(openTransactionsScreen: _openTransactionsScreen, expenses: snapshot.data![2]),
+                      LatestTransactions(
+                        openTransactionsScreen: _openTransactionsScreen,
+                        expenses: snapshot.data![2],
+                      ),
                     ],
                   );
                 },

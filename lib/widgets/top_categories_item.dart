@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +29,7 @@ class TopCategoriesItem extends StatelessWidget {
                 value: value,
                 minHeight: 6,
                 borderRadius: BorderRadius.circular(4),
-                backgroundColor: Colors.transparent,
+                backgroundColor: color.secondary.withOpacity(0.2),
                 valueColor: AlwaysStoppedAnimation(label.color),
               );
             },

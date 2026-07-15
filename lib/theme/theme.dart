@@ -17,8 +17,10 @@ abstract class AppTheme {
       colorScheme: _scheme,
       scaffoldBackgroundColor: _scheme.surface,
       appBarTheme: AppBarTheme(
+        scrolledUnderElevation: 0.0,
         backgroundColor: _scheme.surface,
         foregroundColor: _scheme.primary,
+        titleTextStyle: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: _scheme.onSurface,

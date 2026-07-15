@@ -2,6 +2,7 @@ import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/models/transaction_type.dart';
 import 'package:expense_tracker_app/services/storage.dart';
 import 'package:expense_tracker_app/models/expense.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ExpensesHelper {
@@ -34,6 +35,70 @@ class ExpensesHelper {
       "Category": e.category.label,
       "TimeStamp": e.timestamp.toIso8601String(),
     });
+  }
+
+  static Future<void> insertBudget(
+    Category c,
+    double limit,
+    DateTime date,
+  ) async {
+    Database db = await database;
+    await db.insert('Budget', {
+      "Category": c.label,
+      "limitValue": limit,
+      "TimeStamp": date.toIso8601String(),
+    });
+  }
+
+  static Future<void> updateBudget(
+    Category c,
+    double limit,
+    DateTime date,
+  ) async {
+    Database db = await database;
+    await db.update(
+      'Budget',
+      {
+        "Category": c.label,
+        "limitValue": limit,
+        "TimeStamp": date.toIso8601String(),
+      },
+      where: "Category = ?",
+      whereArgs: [c.label],
+    );
+  }
+
+  static Future<List<dynamic>> retrieveBudget({
+    Category? c,
+    DateTimeRange? range,
+  }) async {
+    Database db = await database;
+    final List<dynamic> output = [];
+
+    List<Map<String, dynamic>> result = await db.query(
+      'Budget',
+      where: c != null
+          ? (range != null
+                ? 'Category = ? AND TimeStamp BETWEEN ? AND ?'
+                : 'Category = ?')
+          : (range != null ? 'TimeStamp BETWEEN ? AND ?' : null),
+      whereArgs: c != null
+          ? (range != null ? [c.label, range.start.toIso8601String(), range.end.toIso8601String()] : [c.label])
+          : (range != null ? [range.start.toIso8601String(), range.end.toIso8601String()] : null),
+    );
+
+    for (int i = 0; i < result.length; i++) {
+      String sCategory = result[i]['Category'];
+      double limit = result[i]['limitValue'];
+
+      Category category = Category.values.firstWhere(
+        (c) => c.label == sCategory,
+      );
+
+      output.add([category, limit]);
+    }
+
+    return output;
   }
 
   static Future<List<Expense>> retrieve(int? amt) async {
@@ -134,12 +199,22 @@ class ExpensesHelper {
     return result;
   }
 
-  static Future<double> income() async {
+  static Future<double> income({DateTime? start, DateTime? end}) async {
     Database db = await database;
-    final List<Map<String, Object?>> result = await db.rawQuery(
-      'SELECT SUM(Amount) AS Total FROM Expenses WHERE Type = ?',
-      ['Income'],
-    );
+    final List<Map<String, Object?>> result;
+
+    if (start != null && end != null) {
+      result = await db.rawQuery(
+        'SELECT SUM(Amount) AS Total FROM Expenses WHERE Type = ? AND TimeStamp >= ? AND TimeStamp <= ?',
+        ['Income', start.toIso8601String(), end.toIso8601String()],
+      );
+    } else {
+      result = await db.rawQuery(
+        'SELECT SUM(Amount) AS Total FROM Expenses WHERE Type = ?',
+        ['Income'],
+      );
+    }
+
     final Object? value = result.first['Total'];
 
     if (value is num) {
@@ -149,12 +224,22 @@ class ExpensesHelper {
     return 0.0;
   }
 
-  static Future<double> expense() async {
+  static Future<double> expense({DateTime? start, DateTime? end}) async {
     Database db = await database;
-    final List<Map<String, Object?>> result = await db.rawQuery(
-      'SELECT SUM(Amount) AS Total FROM Expenses WHERE Type = ?',
-      ['Expense'],
-    );
+    final List<Map<String, Object?>> result;
+
+    if (start != null && end != null) {
+      result = await db.rawQuery(
+        'SELECT SUM(Amount) AS Total FROM Expenses WHERE Type = ? AND TimeStamp >= ? AND TimeStamp <= ?',
+        ['Expense', start.toIso8601String(), end.toIso8601String()],
+      );
+    } else {
+      result = await db.rawQuery(
+        'SELECT SUM(Amount) AS Total FROM Expenses WHERE Type = ?',
+        ['Expense'],
+      );
+    }
+
     final Object? value = result.first['Total'];
 
     if (value is num) {
