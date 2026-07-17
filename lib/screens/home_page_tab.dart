@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void read() async {
-    print(await ExpensesHelper.read());
+    debugPrint('${await ExpensesHelper.read()}');
   }
 
   @override

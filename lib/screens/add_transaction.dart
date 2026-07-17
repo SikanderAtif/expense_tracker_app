@@ -38,6 +38,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     }
   }
 
+  @override
+  void dispose() {
+    _textController.dispose();
+    _amountController.dispose();
+    super.dispose();
+  }
+
   void _setItem(Category item) {
     setState(() {
       _selectedCategory = item;
@@ -161,7 +168,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                     Row(
                       children: [
                         Text(
-                          "\$",
+                          "PKR",
                           style: TextStyle(
                             color: color.onSurface,
                             fontSize: 32,

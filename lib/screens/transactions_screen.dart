@@ -27,6 +27,12 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     _expenseFuture = _initExpense();
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   void _refreshData() {
     setState(() {
       _expenseFuture = _initExpense();

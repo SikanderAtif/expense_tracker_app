@@ -1,5 +1,6 @@
 import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/screens/budget_page_tab.dart';
+import 'package:expense_tracker_app/screens/profile_page_tab.dart';
 import 'package:expense_tracker_app/screens/stats_page_tab.dart';
 import 'package:flutter/material.dart';
 import 'home_page_tab.dart';
@@ -46,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
           HomePage(),
           StatsPage(),
           BudgetPage(),
+          ProfilePage(),
         ],
       ),
       bottomNavigationBar: NavigationBar(

@@ -118,6 +118,24 @@ class _BudgetPageState extends State<BudgetPage> {
                             list: snapshot.data![4],
                           ),
                     SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _openSetBudgetScreen(
+                                snapshot.data![0],
+                                update: true,
+                              );
+                            },
+                            child: Text(
+                              'Update Your Budget',
+                              style: TextStyle(color: color.primary),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 );
               },

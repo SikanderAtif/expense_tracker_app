@@ -21,22 +21,36 @@ class TopCategories extends StatelessWidget {
     double num1 = 0, num2 = 0, num3 = 0;
     for (int i = 0; i < sumList.length; i++) {
       if (sumList[i] > num1) {
+        num3 = num2;
+        num2 = num1;
         num1 = sumList[i];
-        topData[0] = num1;
+        details[2] = details[1];
+        details[1] = details[0];
         details[0] = labels[i];
         continue;
       }
       if (sumList[i] > num2) {
+        num3 = num2;
         num2 = sumList[i];
-        topData[1] = num2;
+        details[2] = details[1];
         details[1] = labels[i];
         continue;
       }
       if (sumList[i] > num3) {
         num3 = sumList[i];
-        topData[2] = num3;
         details[2] = labels[i];
         continue;
+      }
+    }
+    topData[0] = num1;
+    topData[1] = num2;
+    topData[2] = num3;
+
+    for (int i = 0; i < topData.length; i++) {
+      if (topData[i] == 0) {
+        topData.removeAt(i);
+        details.removeAt(i);
+        i--;
       }
     }
 
@@ -56,9 +70,13 @@ class TopCategories extends StatelessWidget {
       ),
       child: Column(
         children: [
-          TopCategoriesItem(data: data[0][0], total: total, label: data[1][0]),
-          TopCategoriesItem(data: data[0][1], total: total, label: data[1][1]),
-          TopCategoriesItem(data: data[0][2], total: total, label: data[1][2]),
+          for (int i = 0; i < data[0].length; i++)
+            TopCategoriesItem(
+              data: data[0][i],
+              total: total,
+              label: data[1][i],
+            ),
+
           SizedBox(height: 16),
         ],
       ),

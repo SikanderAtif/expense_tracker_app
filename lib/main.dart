@@ -1,11 +1,12 @@
-import 'theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:expense_tracker_app/services/expense_helper.dart';
 import 'screens/home_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'firebase_options.dart';
+import 'theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +15,9 @@ void main() async {
   );
   await ExpensesHelper.init();
 
-  runApp(const MainApp());
+  runApp(const ProviderScope(
+    child: MainApp(),
+  ));
 }
 
 class MainApp extends StatelessWidget {

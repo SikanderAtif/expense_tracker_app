@@ -26,6 +26,14 @@ class ExpensesHelper {
     return await db.query('Expenses');
   }
 
+  static Future<void> insertAll(List<Expense> expenses) async {
+    Database db = await database;
+    await db.delete('Expenses');
+    for (Expense e in expenses) {
+      await insert(e);
+    }
+  }
+
   static Future<void> insert(Expense e) async {
     Database db = await database;
     await db.insert("Expenses", {
@@ -59,6 +67,14 @@ class ExpensesHelper {
       whereArgs: [e.id],
     );
   }
+
+  static Future<void> insertBudgetAll(List<dynamic> budget) async {
+    Database db = await database;
+    await db.delete('Budget');
+    for (dynamic element in budget) {
+      await insertBudget(element[0], element[1], element[2]);
+    }
+  } 
 
   static Future<void> insertBudget(
     Category c,
@@ -113,12 +129,13 @@ class ExpensesHelper {
     for (int i = 0; i < result.length; i++) {
       String sCategory = result[i]['Category'];
       double limit = result[i]['limitValue'];
+      DateTime date = DateTime.parse(result[i]['TimeStamp']);
 
       Category category = Category.values.firstWhere(
         (c) => c.label == sCategory,
       );
 
-      output.add([category, limit]);
+      output.add([category, limit, date]);
     }
 
     return output;
@@ -306,8 +323,8 @@ class ExpensesHelper {
 
     temp = await db.query(
       'Expenses',
-      where: 'TimeStamp >= ? AND TimeStamp <= ?',
-      whereArgs: [start.toIso8601String(), end.toIso8601String()],
+      where: 'Type = ? AND TimeStamp >= ? AND TimeStamp <= ?',
+      whereArgs: [TType.expense.label, start.toIso8601String(), end.toIso8601String()],
       orderBy: 'TimeStamp DESC',
     );
 
@@ -333,6 +350,6 @@ class ExpensesHelper {
 
   static Future<void> dropDB() async {
     await Storage.removeDB('expenses_database');
-    print("Successfully Dropped Database");
+    debugPrint("Successfully Dropped Database");
   }
 }

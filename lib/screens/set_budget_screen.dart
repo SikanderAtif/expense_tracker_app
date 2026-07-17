@@ -38,17 +38,46 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
     }
   }
 
+  @override
+  void dispose() {
+    _foodController.dispose();
+    _transitController.dispose();
+    _shopController.dispose();
+    _billsController.dispose();
+    _entertainmentController.dispose();
+    _healthController.dispose();
+    _homeController.dispose();
+    _educationController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadData() async {
     List<dynamic> result = await ExpensesHelper.retrieveBudget();
 
-    double food = result.firstWhere((element) => element[0].label == Category.food.label)[1];
-    double transit = result.firstWhere((element) => element[0].label == Category.transit.label)[1];
-    double shop = result.firstWhere((element) => element[0].label == Category.shop.label)[1];
-    double bills = result.firstWhere((element) => element[0].label == Category.bills.label)[1];
-    double entertainment = result.firstWhere((element) => element[0].label == Category.entertainment.label)[1];
-    double health = result.firstWhere((element) => element[0].label == Category.health.label)[1];
-    double home = result.firstWhere((element) => element[0].label == Category.home.label)[1];
-    double edu = result.firstWhere((element) => element[0].label == Category.edu.label)[1];
+    double food = result.firstWhere(
+      (element) => element[0].label == Category.food.label,
+    )[1];
+    double transit = result.firstWhere(
+      (element) => element[0].label == Category.transit.label,
+    )[1];
+    double shop = result.firstWhere(
+      (element) => element[0].label == Category.shop.label,
+    )[1];
+    double bills = result.firstWhere(
+      (element) => element[0].label == Category.bills.label,
+    )[1];
+    double entertainment = result.firstWhere(
+      (element) => element[0].label == Category.entertainment.label,
+    )[1];
+    double health = result.firstWhere(
+      (element) => element[0].label == Category.health.label,
+    )[1];
+    double home = result.firstWhere(
+      (element) => element[0].label == Category.home.label,
+    )[1];
+    double edu = result.firstWhere(
+      (element) => element[0].label == Category.edu.label,
+    )[1];
 
     _foodController.text = food.toStringAsFixed(2);
     _transitController.text = transit.toStringAsFixed(2);
@@ -65,7 +94,8 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
     double transit = double.tryParse(_transitController.text.trim()) ?? 0.0;
     double shop = double.tryParse(_shopController.text.trim()) ?? 0.0;
     double bills = double.tryParse(_billsController.text.trim()) ?? 0.0;
-    double entertainment = double.tryParse(_entertainmentController.text.trim()) ?? 0.0;
+    double entertainment =
+        double.tryParse(_entertainmentController.text.trim()) ?? 0.0;
     double health = double.tryParse(_healthController.text.trim()) ?? 0.0;
     double home = double.tryParse(_homeController.text.trim()) ?? 0.0;
     double edu = double.tryParse(_educationController.text.trim()) ?? 0.0;
