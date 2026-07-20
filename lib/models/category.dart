@@ -85,7 +85,7 @@ extension CategoryTheme on Category {
       case Category.food: 
         return isDark ? Colors.green : Colors.green.shade300;
       case Category.transit: 
-        return isDark ? Colors.yellow.shade700 : Colors.yellow.shade200;
+        return isDark ? Colors.yellow.shade700 : Colors.yellow.shade400;
       case Category.shop: 
         return isDark ? Colors.pink : Colors.pink.shade300;
       case Category.bills: 

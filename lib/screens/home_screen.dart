@@ -1,58 +1,35 @@
 import 'package:expense_tracker_app/l10n/app_localizations.dart';
-import 'package:expense_tracker_app/screens/budget_page_tab.dart';
-import 'package:expense_tracker_app/screens/profile_page_tab.dart';
-import 'package:expense_tracker_app/screens/stats_page_tab.dart';
+import 'package:expense_tracker_app/providers/expense_provider.dart';
 import 'package:flutter/material.dart';
-import 'home_page_tab.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen ({super.key});
+class HomeScreen extends ConsumerWidget {
+  final StatefulNavigationShell navigationShell;
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-  late PageController _pageController;
+  const HomeScreen({super.key, required this.navigationShell});
 
   @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: _currentIndex);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-
-    _pageController.jumpToPage(index);
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
+    void onTap(int index) {
+      if (index == 1) {
+        ref.read(statsTabKeyProvider.notifier).state++;
+      } else if (index == 2) {
+        ref.read(budgetTabKeyProvider.notifier).state++;
+      }
+      
+      navigationShell.goBranch(
+        index,
+        initialLocation: index == navigationShell.currentIndex,
+      );
+    }
+
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          HomePage(),
-          StatsPage(),
-          BudgetPage(),
-          ProfilePage(),
-        ],
-      ),
+      body: navigationShell,
       bottomNavigationBar: NavigationBar(
-        onDestinationSelected: _onTabTapped,
-        selectedIndex: _currentIndex,
+        onDestinationSelected: onTap,
+        selectedIndex: navigationShell.currentIndex,
         destinations: [
           NavigationDestination(
             selectedIcon: Icon(Icons.home),

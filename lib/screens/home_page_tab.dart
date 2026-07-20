@@ -2,8 +2,6 @@ import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/models/period.dart';
-import 'package:expense_tracker_app/screens/add_transaction.dart';
-import 'package:expense_tracker_app/screens/transactions_screen.dart';
 import 'package:expense_tracker_app/services/expense_helper.dart';
 import 'package:expense_tracker_app/utils/date_time_extension.dart';
 import 'package:expense_tracker_app/widgets/latest_transactions.dart';
@@ -11,6 +9,7 @@ import 'package:expense_tracker_app/widgets/period_filter.dart';
 import 'package:expense_tracker_app/widgets/summary_card.dart';
 import 'package:expense_tracker_app/widgets/spending_summary.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -64,19 +63,16 @@ class _HomePageState extends State<HomePage>
   }
 
   void _openAddTransactionScreen(Expense? expense, bool update) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AddTransactionScreen(expense: expense, update: update)),
-    );
+    await context.push('/add-transaction-screen', extra: {
+      'expense': expense,
+      'update': update,
+    });
 
     _refreshData();
   }
 
   void _openTransactionsScreen() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const TransactionsScreen()),
-    );
+    await context.push('/transactions-screen');
 
     _refreshData();
   }

@@ -5,6 +5,7 @@ import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/services/expense_helper.dart';
 import 'package:expense_tracker_app/widgets/category_budget_input.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SetBudgetScreen extends StatefulWidget {
   final double _budget;
@@ -150,7 +151,11 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
       ]);
     }
 
-    Navigator.pop(context);
+    if(context.canPop()) {
+      context.pop();
+    } else {
+      context.go('/');
+    }
   }
 
   @override

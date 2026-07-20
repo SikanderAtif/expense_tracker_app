@@ -1,12 +1,12 @@
 import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
-import 'package:expense_tracker_app/screens/set_budget_screen.dart';
 import 'package:expense_tracker_app/services/expense_helper.dart';
 import 'package:expense_tracker_app/utils/date_time_extension.dart';
 import 'package:expense_tracker_app/widgets/category_list.dart';
 import 'package:expense_tracker_app/widgets/empty_budget_state.dart';
 import 'package:expense_tracker_app/widgets/monthly_budget_card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({super.key});
@@ -31,12 +31,10 @@ class _BudgetPageState extends State<BudgetPage> {
   }
 
   void _openSetBudgetScreen(double budget, {bool update = false}) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SetBudgetScreen(budget: budget, update: update),
-      ),
-    );
+    await context.push('set-budget-screen', extra: {
+      'budget': budget,
+      'update': update,
+    });
 
     _refreshData();
   }

@@ -8,6 +8,7 @@ import 'package:expense_tracker_app/services/expense_helper.dart';
 import 'package:expense_tracker_app/widgets/grid_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AddTransactionScreen extends StatefulWidget {
@@ -92,7 +93,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     } else {
       await ExpensesHelper.insert(expense);
     }
-    Navigator.pop(context);
+    
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go('/');
+    }
   }
 
   @override
