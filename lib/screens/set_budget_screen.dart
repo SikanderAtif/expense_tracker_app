@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/services/expense_helper.dart';
 import 'package:expense_tracker_app/widgets/category_budget_input.dart';
@@ -89,7 +90,7 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
     _educationController.text = edu.toStringAsFixed(2);
   }
 
-  void _setBudget() async {
+  void _setBudget(AppLocalizations locale) async {
     double food = double.tryParse(_foodController.text.trim()) ?? 0.0;
     double transit = double.tryParse(_transitController.text.trim()) ?? 0.0;
     double shop = double.tryParse(_shopController.text.trim()) ?? 0.0;
@@ -109,7 +110,7 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
           behavior: SnackBarBehavior.fixed,
           backgroundColor: Colors.black,
           content: Text(
-            'You\'re assigned budgets are PKR ${(sum - widget._budget).toStringAsFixed(2)} above the total monthly budget',
+            locale.overBudgetMessage((sum - widget._budget).toStringAsFixed(2)),
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
         ),
@@ -155,6 +156,7 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
     final List<TextEditingController> controllerList = [
       _foodController,
       _transitController,
@@ -167,7 +169,7 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: Text('Set Budget')),
+      appBar: AppBar(title: Text(locale.setBudget)),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -183,11 +185,11 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
                 ),
                 child: ListTile(
                   title: Text(
-                    'Monthly Budget',
+                    locale.monthlyBudget,
                     style: TextStyle(color: color.secondary, fontSize: 10),
                   ),
                   subtitle: Text(
-                    'PKR ${widget._budget}',
+                    '${locale.currency} ${widget._budget}',
                     style: TextStyle(
                       color: color.primary,
                       fontWeight: FontWeight.bold,
@@ -221,8 +223,8 @@ class _SetBudgetScreenState extends State<SetBudgetScreen> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: _setBudget,
-                      child: Text('Set Budget'),
+                      onPressed: () {_setBudget(locale);},
+                      child: Text(locale.setBudget),
                     ),
                   ),
                 ],

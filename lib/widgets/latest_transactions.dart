@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +20,15 @@ class LatestTransactions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
+
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Transactions',
+              locale.transactions,
               style: TextStyle(
                 color: color.primary,
                 fontWeight: FontWeight.bold,
@@ -33,7 +36,7 @@ class LatestTransactions extends StatelessWidget {
             ),
             TextButton(
               onPressed: _openTransactionsScreen,
-              child: Text('View All', style: TextStyle(color: color.onSurface)),
+              child: Text(locale.viewAll, style: TextStyle(color: color.onSurface)),
             ),
           ],
         ),

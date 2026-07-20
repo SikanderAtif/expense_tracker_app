@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
+
     return Padding(
       padding: EdgeInsets.all(12),
       child: ListView.builder(
@@ -30,8 +33,8 @@ class TransactionList extends StatelessWidget {
               yesterday.year == itemDate.year &&
               yesterday.month == itemDate.month &&
               yesterday.day == itemDate.day;
-          String today = 'TODAY';
-          String yest = 'YESTERDAY';
+          String today = locale.today;
+          String yest = locale.yesturday;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

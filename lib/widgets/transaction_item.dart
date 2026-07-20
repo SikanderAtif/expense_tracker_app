@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
+import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/models/transaction_type.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
 
     return Column(
       children: [
@@ -29,7 +32,7 @@ class TransactionItem extends StatelessWidget {
           tileColor: color.secondary.withOpacity(0.1),
           leading: Icon(
             expense.category.icon,
-            color: expense.category.color,
+            color: expense.category.color(context),
           ),
           title: Text(
             expense.text,
@@ -43,11 +46,11 @@ class TransactionItem extends StatelessWidget {
           ),
           trailing: expense.type.label == TType.expense.label
               ? Text(
-                  '-PKR ${expense.amount}',
+                  '-${locale.currency} ${expense.amount}',
                   style: TextStyle(color: Colors.red.shade700),
                 )
               : Text(
-                  '+PKR ${expense.amount}',
+                  '+${locale.currency} ${expense.amount}',
                   style: TextStyle(color: Colors.green.shade700),
                 ),
         ),

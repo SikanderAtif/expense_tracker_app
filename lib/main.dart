@@ -1,3 +1,5 @@
+import 'package:expense_tracker_app/theme/theme_manager.dart';
+import 'package:expense_tracker_app/widgets/debug_floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,14 +12,10 @@ import 'theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await ExpensesHelper.init();
 
-  runApp(const ProviderScope(
-    child: MainApp(),
-  ));
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
@@ -25,21 +23,29 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme,
-      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
-      localizationsDelegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-      supportedLocales: [
-        Locale('en'),
-        Locale('ar'),
-      ],
-      home: HomeScreen(),
+    return AnimatedBuilder(
+      animation: Listenable.merge([appThemeMode, appLocale]),
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.themeLight,
+          darkTheme: AppTheme.themeDark,
+          themeMode: appThemeMode.value,
+          locale: appLocale.value,
+          onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [Locale('en'), Locale('ar')],
+          builder: (context, widget) {
+            return DebugFloatingButton(child: widget!);
+          },
+          home: HomeScreen(),
+        );
+      },
     );
   }
 }

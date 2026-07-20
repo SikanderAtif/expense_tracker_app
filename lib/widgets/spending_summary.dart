@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/widgets/circular_pie_indicator.dart';
 import 'package:flutter/material.dart';
@@ -18,19 +19,22 @@ class SpendingSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
+
     return Center(
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
-          color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+          color: color.secondary.withOpacity(0.1),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('${_period}ly Spending'),
+            Text('${_period}ly ${locale.spending}', style: TextStyle(color: color.primary)),
             const SizedBox(height: 16),
             SizedBox(
               width: 220,
@@ -42,6 +46,7 @@ class SpendingSummary extends StatelessWidget {
                 strokeWidth: 24,
                 textStyle: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: color.primary,
                 ),
               ),
             ),
@@ -54,8 +59,8 @@ class SpendingSummary extends StatelessWidget {
               children: _chartColors.map((c) {
                 String label = '';
                 for (Category element in Category.values) {
-                  if (c == element.color) {
-                    label = element.label;
+                  if (c == element.color(context)) {
+                    label = element.getLocalizedName(locale);
                     break;
                   }
                 }
@@ -74,6 +79,7 @@ class SpendingSummary extends StatelessWidget {
                     Expanded(
                       child: Text(
                         label,
+                        style: TextStyle(color: color.primary),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class MonthlyBudgetCard extends StatelessWidget {
@@ -17,6 +18,8 @@ class MonthlyBudgetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
+
     return Container(
       padding: EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -28,11 +31,11 @@ class MonthlyBudgetCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
-              'TOTAL MONTHLY BUDGET',
+              locale.totalMonthlyBudget,
               style: TextStyle(color: color.secondary, fontSize: 10),
             ),
             subtitle: Text(
-              'PKR $_budget',
+              '${locale.currency} $_budget',
               style: TextStyle(
                 color: color.primary,
                 fontSize: 32,
@@ -63,11 +66,11 @@ class MonthlyBudgetCard extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    'SPENT',
+                    locale.spent,
                     style: TextStyle(color: color.secondary, fontSize: 10),
                   ),
                   Text(
-                    'PKR $_spent',
+                    '${locale.currency} $_spent',
                     style: TextStyle(
                       color: Colors.red.shade700,
                       fontWeight: FontWeight.bold,
@@ -78,11 +81,11 @@ class MonthlyBudgetCard extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    'LEFT',
+                    locale.left,
                     style: TextStyle(color: color.secondary, fontSize: 10),
                   ),
                   Text(
-                    'PKR $_remaining',
+                    '${locale.currency} $_remaining',
                     style: TextStyle(
                       color: Colors.green.shade700,
                       fontWeight: FontWeight.bold,

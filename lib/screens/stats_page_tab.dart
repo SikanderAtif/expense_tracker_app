@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/models/period.dart';
@@ -104,9 +105,10 @@ class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
-
+    final locale = AppLocalizations.of(context)!;
+    
     return Scaffold(
-      appBar: AppBar(title: Text('Statistics')),
+      appBar: AppBar(title: Text(locale.statistics)),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(12),
@@ -127,15 +129,15 @@ class _StatsPageState extends State<StatsPage> {
                       segments: [
                         ButtonSegment<Period>(
                           value: Period.week,
-                          label: Text(Period.week.label),
+                          label: Text(Period.week.getLocalizedName(locale)),
                         ),
                         ButtonSegment<Period>(
                           value: Period.month,
-                          label: Text(Period.month.label),
+                          label: Text(Period.month.getLocalizedName(locale)),
                         ),
                         ButtonSegment<Period>(
                           value: Period.year,
-                          label: Text(Period.year.label),
+                          label: Text(Period.year.getLocalizedName(locale)),
                         ),
                       ],
                     ),
@@ -152,7 +154,7 @@ class _StatsPageState extends State<StatsPage> {
                   }
 
                   if (snapshot.hasError) {
-                    return Center(child: Text('Error Retrieving Data'));
+                    return Center(child: Text(locale.errorRetrieving));
                   }
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
@@ -161,7 +163,7 @@ class _StatsPageState extends State<StatsPage> {
                   return snapshot.data![0].length == 0
                       ? Center(
                           child: Text(
-                            'No Data Yet',
+                            locale.noDataYet,
                             style: TextStyle(color: color.primary),
                           ),
                         )
@@ -174,7 +176,7 @@ class _StatsPageState extends State<StatsPage> {
                             ),
                             SizedBox(height: 24),
                             Text(
-                              'Top Categories',
+                              locale.topCategories,
                               style: TextStyle(
                                 color: color.primary,
                                 fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/providers/expense_provider.dart';
@@ -76,7 +77,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     );
   }
 
-  void _login(String email, String password) async {
+  void _login(AppLocalizations locale, String email, String password) async {
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -84,7 +85,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             context,
           ).colorScheme.secondary.withOpacity(0.1),
           content: Text(
-            'Please fill email and password fields.',
+            locale.emptyLogin,
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
         ),
@@ -92,7 +93,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       return;
     }
 
-    _showLoadingDialog(context, 'Logging you in...');
+    _showLoadingDialog(context, locale.loginLoad);
 
     User? user;
     try {
@@ -104,17 +105,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     } on FirebaseAuthException catch (e) {
       String message;
       if (e.code == 'user-not-found') {
-        message = 'No user found for that email.';
+        message = locale.userNotFound;
       } else if (e.code == 'wrong-password') {
-        message = 'Wrong password provided for that user.';
+        message = locale.wrongPassword;
       } else if (e.code == 'invalid-email') {
-        message = 'Provided email is invalid.';
+        message = locale.invalidEmail;
       } else if (e.code == 'user-disabled') {
-        message = 'The user account has been disabled.';
+        message = locale.userDisabled;
       } else if (e.code == 'invalid-credential') {
-        message = 'The supplied credentials are incorrect.';
+        message = locale.invalidCredential;
       } else {
-        message = 'Network Error';
+        message = locale.networkError;
       }
 
       if (mounted) Navigator.pop(context);
@@ -139,7 +140,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     }
   }
 
-  void _signup(String name, String email, String password) async {
+  void _signup(AppLocalizations locale, String name, String email, String password) async {
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -147,7 +148,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             context,
           ).colorScheme.secondary.withOpacity(0.1),
           content: Text(
-            'Please fill all the fields.',
+            locale.allEmpty,
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
         ),
@@ -155,7 +156,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       return;
     }
 
-    _showLoadingDialog(context, 'Creating your account...');
+    _showLoadingDialog(context, locale.creatingAccount);
 
     User? user;
     try {
@@ -170,13 +171,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     } on FirebaseAuthException catch (e) {
       String message;
       if (e.code == 'weak-password') {
-        message = 'The password provided is too weak.';
+        message = locale.weakPass;
       } else if (e.code == 'email-already-in-use') {
-        message = 'The provided email is already in use.';
+        message = locale.emailUsed;
       } else if (e.code == 'invalid-email') {
-        message = 'Provided email is invalid.';
+        message = locale.invalidEmail;
       } else {
-        message = 'Network Error';
+        message = locale.networkError;
       }
 
       if (mounted) Navigator.pop(context);
@@ -208,10 +209,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     });
   }
 
-  void _upload() async {
+  void _upload(AppLocalizations locale) async {
     if (currentUser == null) return;
 
-    _showLoadingDialog(context, "Uploading your data...");
+    _showLoadingDialog(context, locale.uploading);
 
     try {
       final List<Expense> expenses = await ExpensesHelper.retrieve(null);
@@ -233,10 +234,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     }
   }
 
-  void _download() async {
+  void _download(AppLocalizations locale) async {
     if (currentUser == null) return;
 
-    _showLoadingDialog(context, 'Downloading cloud backup...');
+    _showLoadingDialog(context, locale.downloading);
 
     try {
       final DocumentSnapshot docSnapshot = await _firestore.getUserData(
@@ -292,18 +293,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   Widget build(BuildContext context) {
     super.build(context);
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text(locale.profile),
         actions: [
           uid == null
               ? SizedBox(width: 0)
               : TextButton(
                   onPressed: _signOut,
                   child: Text(
-                    'Sign Out',
+                    locale.signOut,
                     style: TextStyle(color: Colors.red.shade700),
                   ),
                 ),
@@ -339,7 +341,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                           child: Column(
                             children: [
                               Text(
-                                'Welcome, User\nPlease Add your Name to continue',
+                                locale.welcomeMessage,
                                 style: TextStyle(
                                   color: color.primary,
                                   fontWeight: FontWeight.bold,
@@ -400,7 +402,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
                                         setState(() {});
                                       },
-                                      child: Text('Continue'),
+                                      child: Text(locale.continueBtn),
                                     ),
                                   ),
                                 ],
@@ -413,7 +415,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
                     final userData =
                         snapshot.data!.data() as Map<String, dynamic>;
-                    final String userName = userData['name'] ?? 'User';
+                    final String userName = userData['name'] ?? locale.user;
 
                     return Center(
                       child: Padding(
@@ -424,7 +426,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                           children: [
                             SizedBox(height: 24),
                             Text(
-                              'Welcome, $userName',
+                              '${locale.welcome}, $userName',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: color.primary,
@@ -434,7 +436,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                             ),
                             SizedBox(height: 24),
                             Text(
-                              'Upload your Data',
+                              locale.uploadMsg,
                               style: TextStyle(
                                 color: color.primary,
                                 fontSize: 18,
@@ -445,15 +447,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    onPressed: _upload,
-                                    child: Text('Upload'),
+                                    onPressed: () {_upload(locale);},
+                                    child: Text(locale.upload),
                                   ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 32),
                             Text(
-                              'Download your Data',
+                              locale.downloadMsg,
                               style: TextStyle(
                                 color: color.primary,
                                 fontSize: 18,
@@ -464,8 +466,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    onPressed: _download,
-                                    child: Text('Donwload'),
+                                    onPressed: () {_download(locale);},
+                                    child: Text(locale.download),
                                   ),
                                 ),
                               ],

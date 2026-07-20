@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class EmptyBudgetState extends StatelessWidget {
@@ -13,6 +14,7 @@ class EmptyBudgetState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
 
     return Row(
       children: [
@@ -22,7 +24,7 @@ class EmptyBudgetState extends StatelessWidget {
               _openSetBudgetScreen(budget);
             },
             child: Text(
-              'Set Your Budget',
+              locale.setYourBudget,
               style: TextStyle(color: color.primary),
             ),
           ),

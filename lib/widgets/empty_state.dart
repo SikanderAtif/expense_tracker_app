@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class EmptyState extends StatelessWidget {
@@ -5,9 +6,11 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalizations.of(context)!;
+
     return Center(
       child: Text(
-        'No Transactions made yet',
+        locale.emptyStateMessage,
         style: TextStyle(
           color: Theme.of(context).colorScheme.primary,
         ),

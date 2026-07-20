@@ -1,10 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class EmptyProfileState extends StatelessWidget {
-  final void Function(String, String) login;
-  final void Function(String, String, String) signup;
+  final void Function(AppLocalizations, String, String) login;
+  final void Function(AppLocalizations, String, String, String) signup;
 
   const EmptyProfileState({
     super.key,
@@ -15,13 +16,14 @@ class EmptyProfileState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
     final TextEditingController nameController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passController = TextEditingController();
 
     return Column(
       children: [
-        Text('Name'),
+        Text(locale.name),
         SizedBox(height: 16),
         Container(
           height: 60,
@@ -57,7 +59,7 @@ class EmptyProfileState extends StatelessWidget {
           ),
         ),
         SizedBox(height: 30),
-        Text('Email'),
+        Text(locale.email),
         SizedBox(height: 16),
         Container(
           height: 60,
@@ -93,7 +95,7 @@ class EmptyProfileState extends StatelessWidget {
           ),
         ),
         SizedBox(height: 30),
-        Text('Password'),
+        Text(locale.password),
         SizedBox(height: 16),
         Container(
           height: 60,
@@ -135,11 +137,12 @@ class EmptyProfileState extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   login(
+                    locale,
                     emailController.text.trim(),
                     passController.text.trim(),
                   );
                 },
-                child: Text('Login'),
+                child: Text(locale.login),
               ),
             ),
           ],
@@ -151,12 +154,13 @@ class EmptyProfileState extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   signup(
+                    locale,
                     nameController.text.trim(),
                     emailController.text.trim(),
                     passController.text.trim(),
                   );
                 },
-                child: Text('Sign Up'),
+                child: Text(locale.signUp),
               ),
             ),
           ],

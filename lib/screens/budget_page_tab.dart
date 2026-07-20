@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/screens/set_budget_screen.dart';
 import 'package:expense_tracker_app/services/expense_helper.dart';
@@ -66,9 +67,10 @@ class _BudgetPageState extends State<BudgetPage> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Budget')),
+      appBar: AppBar(title: Text(locale.budget)),
       body: RefreshIndicator(
         onRefresh: () async {
           _refreshData();
@@ -84,7 +86,7 @@ class _BudgetPageState extends State<BudgetPage> {
                 }
 
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error Retrieving Data'));
+                  return Center(child: Text(locale.errorRetrieving));
                 }
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
@@ -101,7 +103,7 @@ class _BudgetPageState extends State<BudgetPage> {
                     ),
                     SizedBox(height: 24),
                     Text(
-                      'By Category',
+                      locale.budgetHeading,
                       style: TextStyle(
                         color: color.primary,
                         fontWeight: FontWeight.bold,
@@ -129,7 +131,7 @@ class _BudgetPageState extends State<BudgetPage> {
                               );
                             },
                             child: Text(
-                              'Update Your Budget',
+                              locale.budgetButton,
                               style: TextStyle(color: color.primary),
                             ),
                           ),

@@ -10,6 +10,7 @@ class SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalizations.of(context)!;
+    
     return Container(
       height: 180,
       padding: const EdgeInsets.all(16),
@@ -28,7 +29,7 @@ class SummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'PKR ${_total.toStringAsFixed(2)}',
+            '${locale.currency} ${_total.toStringAsFixed(2)}',
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,
               fontSize: 28,
@@ -59,7 +60,7 @@ class SummaryCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'PKR ${_income.toStringAsFixed(2)}',
+                        '${locale.currency} ${_income.toStringAsFixed(2)}',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontSize: 18,
@@ -89,7 +90,7 @@ class SummaryCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'PKR ${_expense.toStringAsFixed(2)}',
+                        '${locale.currency} ${_expense.toStringAsFixed(2)}',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontSize: 18,

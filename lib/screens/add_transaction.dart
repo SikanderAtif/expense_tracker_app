@@ -104,7 +104,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: widget.update
-            ? Text('Update Transaction')
+            ? Text(locale.addTPUTitle)
             : Text(locale.addTPTitle),
         actions: [
           widget.update
@@ -161,14 +161,14 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 child: Column(
                   children: [
                     Text(
-                      "Amount Spent",
+                      locale.amountSpent,
                       style: TextStyle(color: color.secondary, fontSize: 14),
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
                         Text(
-                          "PKR",
+                          locale.currency,
                           style: TextStyle(
                             color: color.onSurface,
                             fontSize: 32,
@@ -197,7 +197,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               ),
 
               SizedBox(height: 24),
-              Text('SELECT CATEGORY', style: TextStyle(color: color.secondary)),
+              Text(locale.selectCategory, style: TextStyle(color: color.secondary)),
               SizedBox(height: 12),
 
               GridView.count(
@@ -350,7 +350,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 onPressed: () async {
                   await _saveExpense();
                 },
-                child: Text('Save Transaction'),
+                child: Text(locale.saveTransaction),
               ),
             ),
           ],

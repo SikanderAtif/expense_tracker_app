@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class SpendingFlow extends StatelessWidget {
@@ -14,6 +15,8 @@ class SpendingFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
     final double maxValue = chartData.isEmpty 
         ? 1.0 
         : chartData.reduce((a, b) => a > b ? a : b);
@@ -22,16 +25,16 @@ class SpendingFlow extends StatelessWidget {
       height: 300,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+        color: color.secondary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(22),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Spending Flow',
+            locale.spendingFlow,
             style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
+              color: color.primary,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
@@ -72,6 +75,7 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
     final double flexRatio = maxValue == 0 ? 0.0 : (value / maxValue);
 
     return Column(
@@ -85,11 +89,11 @@ class ChartBar extends StatelessWidget {
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    backgroundColor: color.surfaceContainerHighest,
                     content: Text(
                       '$label: \$${value.toStringAsFixed(2)}',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: color.secondary,
                       ),
                     ),
                   ),
@@ -100,7 +104,7 @@ class ChartBar extends StatelessWidget {
                 curve: Curves.easeOutCubic,
                 width: 25,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: color.onSurface,
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
@@ -112,7 +116,7 @@ class ChartBar extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 12,
-            color: Theme.of(context).colorScheme.secondary,
+            color: color.secondary,
           ),
         ),
       ],

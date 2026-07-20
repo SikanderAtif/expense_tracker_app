@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
     final bool isSelected = _selectedItem == _item;
 
     return GestureDetector(
@@ -50,7 +52,7 @@ class GridItem extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              _item.label,
+              _item.getLocalizedName(locale),
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

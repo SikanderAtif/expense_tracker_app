@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class CategoryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
 
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
@@ -36,23 +38,23 @@ class CategoryList extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                    leading: Icon(category.icon, color: category.color),
+                    leading: Icon(category.icon, color: category.color(context)),
                     title: Text(
-                      category.label,
+                      category.getLocalizedName(locale),
                       style: TextStyle(
                         color: color.primary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     subtitle: Text(
-                      'PKR ${spentValue.toStringAsFixed(2)} OF PKR ${limit.toStringAsFixed(2)}',
+                      '${locale.currency} ${spentValue.toStringAsFixed(2)} ${locale.ofText} ${locale.currency} ${limit.toStringAsFixed(2)}',
                       style: TextStyle(color: color.secondary, fontSize: 12),
                     ),
                     trailing: Text(
                       '${(spentValue / limit * 100).toStringAsFixed(2)}%',
                       style: TextStyle(
                         color: spentValue > limit
-                            ? category.color
+                            ? category.color(context)
                             : color.primary,
                         fontWeight: FontWeight.bold,
                       ),
@@ -66,7 +68,7 @@ class CategoryList extends StatelessWidget {
                     duration: Duration(milliseconds: 400),
                     builder: (context, value, _) {
                       return LinearProgressIndicator(
-                        color: category.color,
+                        color: category.color(context),
                         backgroundColor: color.secondary.withOpacity(0.2),
                         value: spentValue > limit ? 1.0 : spentValue / limit,
                         borderRadius: BorderRadius.circular(12),
@@ -77,14 +79,14 @@ class CategoryList extends StatelessWidget {
                   SizedBox(height: 8),
                   spentValue > limit
                       ? Text(
-                          'Exceeded budget by PKR ${spentValue - limit}',
+                          '${locale.budgetExceeded} ${locale.currency} ${spentValue - limit}',
                           style: TextStyle(
-                            color: category.color,
-                            backgroundColor: category.color.withOpacity(0.2),
+                            color: category.color(context),
+                            backgroundColor: category.color(context).withOpacity(0.2),
                           ),
                         )
                       : Text(
-                          '${limit - spentValue} REMAINING',
+                          '${limit - spentValue} ${locale.remaining}',
                           style: TextStyle(color: color.secondary),
                         ),
                   SizedBox(height: 18),

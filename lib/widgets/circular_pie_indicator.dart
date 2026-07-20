@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -61,6 +62,7 @@ class CircularPieIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double totalSum = data.fold(0, (sum, item) => sum + item);
+    final locale = AppLocalizations.of(context)!;
 
     return SizedBox(
       width: size,
@@ -79,8 +81,9 @@ class CircularPieIndicator extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: Text(
-              'PKR\n${totalSum.toStringAsFixed(2)}',
-              style: textStyle ?? const TextStyle(
+              '${locale.currency}\n${totalSum.toStringAsFixed(2)}',
+              style: textStyle ?? TextStyle(
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),

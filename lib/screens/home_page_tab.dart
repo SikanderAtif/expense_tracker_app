@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage>
       );
       if (temp != 0.0) {
         data.add(temp);
-        color.add(c.color);
+        color.add(c.color(context));
       }
     }
 
@@ -119,13 +119,14 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final locale = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(AppLocalizations.of(context)!.homeTitle),
+            Text(locale.homeTitle),
             Text(
               DateFormat('MMMM y').format(DateTime.now()),
               style: TextStyle(
@@ -145,7 +146,7 @@ class _HomePageState extends State<HomePage>
                 future: _balanceFuture,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Center(child: Text('Error Retrieving Data'));
+                    return Center(child: Text(locale.errorRetrieving));
                   }
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
@@ -172,7 +173,7 @@ class _HomePageState extends State<HomePage>
                   }
 
                   if (snapshot.hasError) {
-                    return Center(child: Text('Error Retrieving Data'));
+                    return Center(child: Text(locale.errorRetrieving));
                   }
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());

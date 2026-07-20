@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:expense_tracker_app/l10n/app_localizations.dart';
 import 'package:expense_tracker_app/models/category.dart';
 import 'package:expense_tracker_app/models/expense.dart';
 import 'package:expense_tracker_app/models/transaction_type.dart';
@@ -93,6 +94,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final locale = AppLocalizations.of(context)!;
     final List<String> filterList = ['All'];
 
     for (TType value in TType.values) {
@@ -107,7 +109,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
         centerTitle: true,
-        title: Text('All Transactions'),
+        title: Text(locale.allTransactions),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(120),
           child: Column(
@@ -145,7 +147,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
-                            hintText: "Search transactions...",
+                            hintText: locale.searchHint,
                             hintStyle: TextStyle(color: color.secondary),
                           ),
                         ),
@@ -185,7 +187,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                               left: 24,
                             ),
                             child: Text(
-                              filterList[index],
+                              locale.filterTabs('$index'),
                               style: TextStyle(
                                 color: isSelected
                                     ? color.primary
@@ -212,7 +214,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
           }
 
           if (snapshot.hasError) {
-            return Center(child: Text('Error Retrieving Data'));
+            return Center(child: Text(locale.errorRetrieving));
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
