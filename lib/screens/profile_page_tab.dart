@@ -287,7 +287,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     } catch (e) {
       debugPrint("Upload failed: $e");
     } finally {
-      if (mounted) Navigator.pop(context);
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/profile');
+      }
     }
   }
 
@@ -339,9 +343,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     } catch (e) {
       debugPrint('Download failed: $e');
     } finally {
-      if (mounted) {
-        Navigator.pop(context);
-        setState(() {});
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/profile');
       }
     }
   }

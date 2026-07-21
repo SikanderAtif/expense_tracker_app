@@ -31,10 +31,10 @@ class _BudgetPageState extends State<BudgetPage> {
   }
 
   void _openSetBudgetScreen(double budget, {bool update = false}) async {
-    await context.push('set-budget-screen', extra: {
-      'budget': budget,
-      'update': update,
-    });
+    await context.push(
+      'set-budget-screen',
+      extra: {'budget': budget, 'update': update},
+    );
 
     _refreshData();
   }
@@ -118,24 +118,26 @@ class _BudgetPageState extends State<BudgetPage> {
                             list: snapshot.data![4],
                           ),
                     SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _openSetBudgetScreen(
-                                snapshot.data![0],
-                                update: true,
-                              );
-                            },
-                            child: Text(
-                              locale.budgetButton,
-                              style: TextStyle(color: color.primary),
-                            ),
+                    snapshot.data![4].isEmpty
+                        ? SizedBox(height: 12)
+                        : Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    _openSetBudgetScreen(
+                                      snapshot.data![0],
+                                      update: true,
+                                    );
+                                  },
+                                  child: Text(
+                                    locale.budgetButton,
+                                    style: TextStyle(color: color.primary),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
                   ],
                 );
               },
