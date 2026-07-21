@@ -293,4 +293,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yesturday => 'YESTERDAY';
+
+  @override
+  String get googleLogin => 'Signing in with Google';
+
+  @override
+  String get errorGoogleLogin => 'Google Sign-In failed.';
 }

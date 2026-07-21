@@ -607,6 +607,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'YESTERDAY'**
   String get yesturday;
+
+  /// No description provided for @googleLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in with Google'**
+  String get googleLogin;
+
+  /// No description provided for @errorGoogleLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Sign-In failed.'**
+  String get errorGoogleLogin;
 }
 
 class _AppLocalizationsDelegate

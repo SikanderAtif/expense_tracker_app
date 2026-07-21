@@ -111,6 +111,9 @@
     "spendingFlow": "تدفق الإنفاق",
     "spending": "الإنفاق",
     "today": "اليوم",
-    "yesturday": "أمس"
+    "yesturday": "أمس",
+    "googleLogin": "Google تسجيل الدخول باستخدام",
+    "errorGoogleLogin": "Google فشل تسجيل الدخول."
+
 
 }

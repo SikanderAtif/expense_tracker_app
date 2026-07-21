@@ -303,5 +303,12 @@
     "@today": {},
 
     "yesturday": "YESTERDAY",
-    "@yesturday": {}
+    "@yesturday": {},
+
+    "googleLogin": "Signing in with Google",
+    "@googleLogin": {},
+
+    "errorGoogleLogin": "Google Sign-In failed.",
+    "@errorGoogleLogin": {}
+
 }

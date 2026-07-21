@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class EmptyProfileState extends StatelessWidget {
   final void Function(AppLocalizations, String, String) login;
   final void Function(AppLocalizations, String, String, String) signup;
+  final void Function(AppLocalizations) googleLogin;
 
   const EmptyProfileState({
     super.key,
     required this.login,
     required this.signup,
+    required this.googleLogin,
   });
 
   @override
@@ -166,6 +168,20 @@ class EmptyProfileState extends StatelessWidget {
           ],
         ),
         SizedBox(height: 16),
+        Text('OR', style: TextStyle(color: color.secondary)),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.login),
+                label: const Text('Sign in with Google'),
+                onPressed: () async {
+                  googleLogin(locale);
+                },
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

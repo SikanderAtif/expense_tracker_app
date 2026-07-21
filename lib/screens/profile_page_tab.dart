@@ -12,6 +12,7 @@ import 'package:expense_tracker_app/widgets/empty_profile_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -77,6 +78,53 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     );
   }
 
+  void _googleLogin(AppLocalizations locale) async {
+    _showLoadingDialog(context, locale.googleLogin);
+
+    try {
+      final UserCredential? userCredential = await _auth.loginWithGoogle();
+
+      if (userCredential != null && userCredential.user != null) {
+        final bool isNewUser =
+            userCredential.additionalUserInfo?.isNewUser ?? false;
+
+        if (isNewUser) {
+          final String name = userCredential.user!.displayName ?? 'User';
+          await _firestore.addUserProfile(
+            userCredential.user!.uid,
+            [],
+            [],
+            name,
+          );
+        }
+
+        setState(() {
+          currentUser = userCredential.user;
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.secondary.withOpacity(0.1),
+            content: Text(
+              e.message ?? locale.errorGoogleLogin,
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            ),
+          ),
+        );
+      }
+    } finally {
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/profile');
+      }
+    }
+  }
+
   void _login(AppLocalizations locale, String email, String password) async {
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -134,13 +182,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
       return;
     } finally {
-      if (user != null && mounted) {
-        Navigator.pop(context);
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/profile');
       }
     }
   }
 
-  void _signup(AppLocalizations locale, String name, String email, String password) async {
+  void _signup(
+    AppLocalizations locale,
+    String name,
+    String email,
+    String password,
+  ) async {
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -196,8 +251,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
       return;
     } finally {
-      if (user != null && mounted) {
-        Navigator.pop(context);
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/profile');
       }
     }
   }
@@ -315,7 +372,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         child: Padding(
           padding: EdgeInsets.all(12),
           child: uid == null
-              ? EmptyProfileState(login: _login, signup: _signup)
+              ? EmptyProfileState(
+                  login: _login,
+                  signup: _signup,
+                  googleLogin: _googleLogin,
+                )
               : StreamBuilder<DocumentSnapshot>(
                   stream: _firestore.users.doc(uid).snapshots(),
                   builder: (context, snapshot) {
@@ -447,7 +508,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    onPressed: () {_upload(locale);},
+                                    onPressed: () {
+                                      _upload(locale);
+                                    },
                                     child: Text(locale.upload),
                                   ),
                                 ),
@@ -466,7 +529,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    onPressed: () {_download(locale);},
+                                    onPressed: () {
+                                      _download(locale);
+                                    },
                                     child: Text(locale.download),
                                   ),
                                 ),
