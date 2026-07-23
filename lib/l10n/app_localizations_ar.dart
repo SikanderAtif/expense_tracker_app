@@ -127,7 +127,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get emptyLogin => 'يرجى تعبئة حقلي البريد الإلكتروني وكلمة المرور';
 
   @override
-  String get loginLoad => '... جاري تسجيل دخولك';
+  String get loginLoad => 'جاري تسجيل دخولك...';
 
   @override
   String get userNotFound => 'لم يتم العثور على مستخدم لهذا البريد الإلكتروني';
@@ -151,7 +151,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get allEmpty => 'يرجى تعبئة جميع الحقول';
 
   @override
-  String get creatingAccount => '... جارٍ إنشاء حسابك';
+  String get creatingAccount => 'جارٍ إنشاء حسابك...';
 
   @override
   String get emailUsed => 'عنوان البريد الإلكتروني المقدم مستخدم بالفعل';
@@ -160,10 +160,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weakPass => 'كلمة المرور المقدمة ضعيفة للغاية';
 
   @override
-  String get uploading => '... جارٍ تحميل بياناتك';
+  String get uploadingError => 'فشل الرفع';
 
   @override
-  String get downloading => '... جارٍ تنزيل النسخة الاحتياطية السحابية';
+  String get uploading => 'جارٍ تحميل بياناتك...';
+
+  @override
+  String get downloadingError => 'فشل التنزيل';
+
+  @override
+  String get downloading => 'جارٍ تنزيل النسخة الاحتياطية السحابية...';
 
   @override
   String get signOut => 'تسجيل الخروج';
@@ -217,7 +223,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get allTransactions => 'كل الحركات المالية';
 
   @override
-  String get searchHint => '... البحث في المعاملات';
+  String get searchHint => 'البحث في المعاملات...';
 
   @override
   String filterTabs(String count) {
@@ -299,4 +305,42 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorGoogleLogin => 'Google فشل تسجيل الدخول.';
+
+  @override
+  String get settings => 'إعدادات';
+
+  @override
+  String get screenMode => 'وضع الشاشة';
+
+  @override
+  String get light => 'ضوء';
+
+  @override
+  String get dark => 'مظلم';
+
+  @override
+  String get language => 'لغة';
+
+  @override
+  String get or => 'أو';
+
+  @override
+  String get googleBtn => 'تسجيل الدخول باستخدام  Google';
+
+  @override
+  String get delete => 'يمسح';
+
+  @override
+  String get warning => '!تحذير';
+
+  @override
+  String get userMismatch =>
+      'بيانات الاعتماد المقدمة لا تتطابق مع بيانات اعتماد المستخدم';
+
+  @override
+  String get deleting => 'حذف الحساب...';
+
+  @override
+  String get deleteMsg =>
+      'ستقوم بحذف حسابك، مما سيؤدي إلى حذف جميع البيانات الموجودة على السحابة (ملاحظة: لن يؤثر ذلك على بياناتك المحلية الحالية). إذا كنت متأكداً من هذا الإجراء، فأدخل بيانات اعتمادك أدناه.';
 }

@@ -13,7 +13,9 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = AppLocalizations.of(context)!;
     void onTap(int index) {
-      if (index == 1) {
+      if (index == 0) {
+        ref.read(homeTabKeyProvider.notifier).state++;
+      } else if (index == 1) {
         ref.read(statsTabKeyProvider.notifier).state++;
       } else if (index == 2) {
         ref.read(budgetTabKeyProvider.notifier).state++;

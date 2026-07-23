@@ -173,8 +173,14 @@
     "weakPass": "The password provided is too weak.",
     "@weakPass": {},
 
+    "uploadingError": "Upload Failed",
+    "@uploadingError": {},
+
     "uploading": "Uploading your data...",
     "@uploading": {},
+
+    "downloadingError": "Download Failed",
+    "@downloadingError": {},
 
     "downloading": "Downloading cloud backup...",
     "@downloading": {},
@@ -309,6 +315,41 @@
     "@googleLogin": {},
 
     "errorGoogleLogin": "Google Sign-In failed.",
-    "@errorGoogleLogin": {}
+    "@errorGoogleLogin": {},
 
+    "settings": "Settings",
+    "@settings": {},
+
+    "screenMode": "Screen Mode",
+    "@screenMode": {},
+
+    "light": "Light",
+    "@light": {},
+
+    "dark": "Dark",
+    "@dark": {},
+
+    "language": "Language",
+    "@language": {},
+
+    "or": "OR",
+    "@or": {},
+
+    "googleBtn": "Sign in with Google",
+    "@googleBtn": {},
+
+    "delete": "Delete",
+    "@delete": {},
+
+    "warning": "Warning!",
+    "@warning": {},
+
+    "userMismatch": "Provided Credentials Do NOT Match User's Credentials",
+    "@userMismatch": {},
+
+    "deleting": "Deleting Account...",
+    "@deleting": {},
+
+    "deleteMsg": "You are going to DELETE your account which will delete all data in the cloud (Note: This does not affect your current local data). If you are sure about this action enter your credentials below.",
+    "@deleteMsg": {}
 }

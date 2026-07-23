@@ -37,5 +37,6 @@ final budgetProvider = AsyncNotifierProvider<BudgetNotifier, List<dynamic>>(() {
   return BudgetNotifier();
 });
 
+final homeTabKeyProvider = StateProvider<int>((ref) => 0);
 final statsTabKeyProvider = StateProvider<int>((ref) => 0);
 final budgetTabKeyProvider = StateProvider<int>((ref) => 0);

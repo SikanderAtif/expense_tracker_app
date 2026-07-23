@@ -36,6 +36,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     currentUser = _auth.currentUser();
   }
 
+  void _openSettingsScreen() async {
+    final User? user = await context.pushNamed('settings-screen');
+
+    setState(() {
+      currentUser = user;
+    });
+  }
+
   void _showLoadingDialog(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -151,20 +159,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         currentUser = user;
       });
     } on FirebaseAuthException catch (e) {
-      String message;
-      if (e.code == 'user-not-found') {
-        message = locale.userNotFound;
-      } else if (e.code == 'wrong-password') {
-        message = locale.wrongPassword;
-      } else if (e.code == 'invalid-email') {
-        message = locale.invalidEmail;
-      } else if (e.code == 'user-disabled') {
-        message = locale.userDisabled;
-      } else if (e.code == 'invalid-credential') {
-        message = locale.invalidCredential;
-      } else {
-        message = locale.networkError;
-      }
+      String message = _auth.exceptionHandler(e, context);
 
       if (mounted) Navigator.pop(context);
 
@@ -224,17 +219,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         currentUser = user;
       });
     } on FirebaseAuthException catch (e) {
-      String message;
-      if (e.code == 'weak-password') {
-        message = locale.weakPass;
-      } else if (e.code == 'email-already-in-use') {
-        message = locale.emailUsed;
-      } else if (e.code == 'invalid-email') {
-        message = locale.invalidEmail;
-      } else {
-        message = locale.networkError;
-      }
-
+      String message = _auth.exceptionHandler(e, context);
       if (mounted) Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -286,6 +271,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       await _firestore.updateData(currentUser!.uid, expenses, budgetMap);
     } catch (e) {
       debugPrint("Upload failed: $e");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(
+            context,
+          ).colorScheme.secondary.withOpacity(0.1),
+          content: Text(
+            locale.uploadingError,
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
+      );
     } finally {
       if (context.canPop()) {
         context.pop();
@@ -342,6 +339,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       ref.read(budgetProvider.notifier).refresh();
     } catch (e) {
       debugPrint('Download failed: $e');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(
+            context,
+          ).colorScheme.secondary.withOpacity(0.1),
+          content: Text(
+            locale.downloadingError,
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
+      );
     } finally {
       if (context.canPop()) {
         context.pop();
@@ -549,6 +558,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                   },
                 ),
         ),
+      ),
+      persistentFooterButtons: [
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: _openSettingsScreen,
+                child: Text(locale.settings),
+              ),
+            ),
+          ],
+        ),
+      ],
+      persistentFooterDecoration: BoxDecoration(
+        border: Border.all(color: color.surface),
       ),
     );
   }

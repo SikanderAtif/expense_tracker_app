@@ -4,6 +4,7 @@ import 'package:expense_tracker_app/screens/budget_page_tab.dart';
 import 'package:expense_tracker_app/screens/home_page_tab.dart';
 import 'package:expense_tracker_app/screens/profile_page_tab.dart';
 import 'package:expense_tracker_app/screens/set_budget_screen.dart';
+import 'package:expense_tracker_app/screens/settings_screen.dart';
 import 'package:expense_tracker_app/screens/stats_page_tab.dart';
 import 'package:expense_tracker_app/screens/transactions_screen.dart';
 import 'package:expense_tracker_app/theme/theme_manager.dart';
@@ -32,13 +33,26 @@ final _router = GoRouter(
       branches: [
         StatefulShellBranch(
           routes: [
-            GoRoute(path: '/', builder: (context, state) => const HomePage()),
+            GoRoute(
+              path: '/',
+              name: 'home',
+              builder: (context, state) {
+                return Consumer(
+                  builder: (context, ref, child) {
+                    final keyVersion = ref.watch(homeTabKeyProvider);
+
+                    return HomePage(key: ValueKey('home_$keyVersion'));
+                  },
+                );
+              },
+            ),
           ],
         ),
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: '/stats',
+              name: 'stats',
               builder: (context, state) {
                 return Consumer(
                   builder: (context, ref, child) {
@@ -55,6 +69,7 @@ final _router = GoRouter(
           routes: [
             GoRoute(
               path: '/budget',
+              name: 'budget',
               builder: (context, state) {
                 return Consumer(
                   builder: (context, ref, child) {
@@ -71,6 +86,7 @@ final _router = GoRouter(
           routes: [
             GoRoute(
               path: '/profile',
+              name: 'profile',
               builder: (context, state) => const ProfilePage(),
             ),
           ],
@@ -80,6 +96,7 @@ final _router = GoRouter(
 
     GoRoute(
       path: '/add-transaction-screen',
+      name: 'add-transaction-screen',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) {
         final payload = state.extra as Map<String, dynamic>;
@@ -92,11 +109,13 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/transactions-screen',
+      name: 'transactions-screen',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const TransactionsScreen(),
     ),
     GoRoute(
       path: '/set-budget-screen',
+      name: 'set-budget-screen',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) {
         final payload = state.extra as Map<String, dynamic>;
@@ -106,6 +125,12 @@ final _router = GoRouter(
           update: payload['update'],
         );
       },
+    ),
+    GoRoute(
+      path: '/settings-screen',
+      name: 'settings-screen',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => const SettingsScreen(),
     ),
   ],
 );

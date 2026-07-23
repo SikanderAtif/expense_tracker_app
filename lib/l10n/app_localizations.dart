@@ -374,11 +374,23 @@ abstract class AppLocalizations {
   /// **'The password provided is too weak.'**
   String get weakPass;
 
+  /// No description provided for @uploadingError.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Failed'**
+  String get uploadingError;
+
   /// No description provided for @uploading.
   ///
   /// In en, this message translates to:
   /// **'Uploading your data...'**
   String get uploading;
+
+  /// No description provided for @downloadingError.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Failed'**
+  String get downloadingError;
 
   /// No description provided for @downloading.
   ///
@@ -619,6 +631,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Google Sign-In failed.'**
   String get errorGoogleLogin;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @screenMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen Mode'**
+  String get screenMode;
+
+  /// No description provided for @light.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get light;
+
+  /// No description provided for @dark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get dark;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get or;
+
+  /// No description provided for @googleBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get googleBtn;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning!'**
+  String get warning;
+
+  /// No description provided for @userMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Provided Credentials Do NOT Match User\'s Credentials'**
+  String get userMismatch;
+
+  /// No description provided for @deleting.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting Account...'**
+  String get deleting;
+
+  /// No description provided for @deleteMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'You are going to DELETE your account which will delete all data in the cloud (Note: This does not affect your current local data). If you are sure about this action enter your credentials below.'**
+  String get deleteMsg;
 }
 
 class _AppLocalizationsDelegate

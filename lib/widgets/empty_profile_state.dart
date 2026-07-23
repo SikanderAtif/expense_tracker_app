@@ -167,14 +167,15 @@ class EmptyProfileState extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16),
-        Text('OR', style: TextStyle(color: color.secondary)),
+        SizedBox(height: 10),
+        Text(locale.or, style: TextStyle(color: color.secondary)),
+        SizedBox(height: 10),
         Row(
           children: [
             Expanded(
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.login),
-                label: const Text('Sign in with Google'),
+                label: Text(locale.googleBtn),
                 onPressed: () async {
                   googleLogin(locale);
                 },

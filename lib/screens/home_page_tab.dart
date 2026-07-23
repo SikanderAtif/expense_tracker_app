@@ -19,8 +19,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin {
+class _HomePageState extends State<HomePage> {
   Period _selectedPeriod = Period.week;
   DateTime start = DateTime.now().currentWeekRange.start;
   DateTime end = DateTime.now().currentWeekRange.end;
@@ -110,11 +109,7 @@ class _HomePageState extends State<HomePage>
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     final locale = AppLocalizations.of(context)!;
 
     return Scaffold(

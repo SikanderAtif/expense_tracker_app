@@ -160,7 +160,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weakPass => 'The password provided is too weak.';
 
   @override
+  String get uploadingError => 'Upload Failed';
+
+  @override
   String get uploading => 'Uploading your data...';
+
+  @override
+  String get downloadingError => 'Download Failed';
 
   @override
   String get downloading => 'Downloading cloud backup...';
@@ -299,4 +305,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorGoogleLogin => 'Google Sign-In failed.';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get screenMode => 'Screen Mode';
+
+  @override
+  String get light => 'Light';
+
+  @override
+  String get dark => 'Dark';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get or => 'OR';
+
+  @override
+  String get googleBtn => 'Sign in with Google';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get warning => 'Warning!';
+
+  @override
+  String get userMismatch =>
+      'Provided Credentials Do NOT Match User\'s Credentials';
+
+  @override
+  String get deleting => 'Deleting Account...';
+
+  @override
+  String get deleteMsg =>
+      'You are going to DELETE your account which will delete all data in the cloud (Note: This does not affect your current local data). If you are sure about this action enter your credentials below.';
 }
