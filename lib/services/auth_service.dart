@@ -50,8 +50,7 @@ class AuthService {
         serverClientId: dotenv.env['GOOGLE_WEB_CLIENT_ID'],
       );
 
-      final GoogleSignInAccount? googleUser = await _googleSignIn
-          .authenticate();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate();
       if (googleUser == null) return null;
 
       final List<String> scopes = ['email', 'profile'];
@@ -59,8 +58,7 @@ class AuthService {
         scopes,
       );
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken,
         accessToken: clientAuth.accessToken,
@@ -84,6 +82,40 @@ class AuthService {
     } catch (e) {
       print('Error: ${e}');
       rethrow;
+    }
+  }
+
+  Future<void> deleteGoogleAccount() async {
+    try{
+      final User? user = currentUser();
+
+      if (user == null) return;
+
+      await _googleSignIn.initialize(
+        serverClientId: dotenv.env['GOOGLE_WEB_CLIENT_ID'],
+      );
+      final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate();
+
+      if (googleUser == null) return;
+
+      final List<String> scopes = ['email', 'profile'];
+      final clientAuth = await googleUser.authorizationClient.authorizeScopes(
+        scopes,
+      );
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+        accessToken: clientAuth.accessToken,
+      );
+
+      await user.reauthenticateWithCredential(credential);
+      await user.delete();
+    } on FirebaseAuthException catch (e) {
+      debugPrint('${e.message}');
+      rethrow;
+    } catch (e) {
+      debugPrint('Error: $e');
     }
   }
 

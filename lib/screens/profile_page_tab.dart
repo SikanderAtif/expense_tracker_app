@@ -161,8 +161,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     } on FirebaseAuthException catch (e) {
       String message = _auth.exceptionHandler(e, context);
 
-      if (mounted) Navigator.pop(context);
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Theme.of(

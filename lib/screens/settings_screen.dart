@@ -61,7 +61,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Future<List<String>?> _showWarningDialog(BuildContext context) async {
+  Future<List<String>?> _showWarningDialog(
+    BuildContext context,
+    bool google,
+  ) async {
     final ColorScheme color = Theme.of(context).colorScheme;
     final locale = AppLocalizations.of(context)!;
     final TextEditingController emailController = TextEditingController();
@@ -103,32 +106,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 SizedBox(height: 24),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    hintText: locale.email,
-                    hintStyle: TextStyle(color: color.secondary),
-                  ),
-                ),
-                SizedBox(height: 12),
-                TextField(
-                  controller: passController,
-                  decoration: InputDecoration(
-                    hintText: locale.password,
-                    hintStyle: TextStyle(color: color.secondary),
-                  ),
-                ),
-                SizedBox(height: 12),
+                google
+                    ? SizedBox(height: 0)
+                    : TextField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          hintText: locale.email,
+                          hintStyle: TextStyle(color: color.secondary),
+                        ),
+                      ),
+                google ? SizedBox(height: 0) : SizedBox(height: 12),
+                google
+                    ? SizedBox(height: 0)
+                    : TextField(
+                        controller: passController,
+                        decoration: InputDecoration(
+                          hintText: locale.password,
+                          hintStyle: TextStyle(color: color.secondary),
+                        ),
+                      ),
+                google ? SizedBox(height: 0) : SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context, [
-                            emailController.text.trim(),
-                            passController.text.trim(),
-                          ]);
-                        },
+                        onPressed: google
+                            ? () async {
+                                await _auth.deleteGoogleAccount();
+                                Navigator.pop(context);
+                              }
+                            : () {
+                                Navigator.pop(context, [
+                                  emailController.text.trim(),
+                                  passController.text.trim(),
+                                ]);
+                              },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.resolveWith((_) {
                             return Colors.red[700];
@@ -147,8 +159,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void _deleteGoogleAccount() async {
+    final user = _auth.currentUser();
+
+    if (user == null) return;
+
+    try {
+      String uid = user.uid;
+      await _showWarningDialog(context, true);
+      await _firestore.deleteUser(uid);
+    } on FirebaseException catch (e) {
+      final message = _auth.exceptionHandler(e, context);
+      debugPrint('Error: ${e}');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          content: Text(
+            message,
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
+      );
+    } finally {
+      if (context.canPop()) {
+        context.pop(null);
+      } else {
+        context.go('/profile');
+      }
+    }
+  }
+
   void _deleteAccount() async {
-    final List<String>? credentials = await _showWarningDialog(context);
+    final List<String>? credentials = await _showWarningDialog(context, false);
     if (credentials == null ||
         credentials.length < 2 ||
         credentials[0].isEmpty ||
@@ -178,9 +221,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: Theme.of(
-            context,
-          ).colorScheme.secondary,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           content: Text(
             message,
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
@@ -211,6 +252,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         appLocale.value?.languageCode ??
         Localizations.maybeLocaleOf(context)?.languageCode;
     Language? lang = currentLang == 'ar' ? Language.arabic : Language.english;
+    final bool google =
+        _auth.currentUser()?.providerData.any(
+          (info) => info.providerId == 'google.com',
+        ) ??
+        false;
 
     return Scaffold(
       appBar: AppBar(title: Text(locale.settings)),
@@ -310,7 +356,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: _deleteAccount,
+                      onPressed: google ? _deleteGoogleAccount : _deleteAccount,
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.resolveWith((_) {
                           return Colors.red[700];
