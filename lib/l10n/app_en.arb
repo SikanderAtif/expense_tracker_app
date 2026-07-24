@@ -1,0 +1,355 @@
+{    
+    "appTitle": "Expenses",
+    "@appTitle": {
+        "description": "Text for App Title"
+    },
+
+    "homeTitle": "Dashboard",
+    "@homeTitle": {
+        "description": "AppBar Title text for home_screen.dart"
+    },
+
+    "homeTabTitle": "HOME",
+    "@homeTabTitle": {
+        "description": "Text for Home Tab Title in home_screen.dart"
+    },
+
+    "statsTabTitle": "STATS",
+    "@statsTabTitle": {
+        "description": "Text for Stats Tab Title in home_screen.dart"
+    },
+
+    "budgetTabTitle": "BUDGET",
+    "@budgetTabTitle": {
+        "description": "Text for Budget Tab Title in home_screen.dart"
+    },
+
+    "profileTabTitle": "PROFILE",
+    "@profileTabTitle": {
+        "description": "Text for Profile Tab Title in home_screen.dart"
+    },
+
+    "totalBalance": "Total Balance",
+    "@totalBalance": {
+        "description": "Text for the total balance Title in home_page_tab.dart"
+    },
+
+    "income": "INCOME",
+    "@income": {
+        "description": "Text for the income title"
+    },
+
+    "expenses": "{count, plural, =1{EXPENSE} other{EXPENSES}}",
+    "@expenses": {
+        "description": "Text for the expenses title",
+        "placeholders": {
+            "count": {
+                "type": "num",
+                "format": "compact"
+            }
+        }
+    },
+
+    "periodWeek": "Week",
+    "@periodWeek": {
+        "description": "Text for week period filter in home_page_tab.dart"
+    },
+    
+    "periodMonth": "Month",
+    "@periodMonth": {
+        "description": "Text for month period filter in home_page_tab.dart"
+    },
+
+    "periodYear": "Year",
+    "@periodYear": {
+        "description": "Text for year period filter in home_page_tab.dart"
+    },
+
+    "addTPTitle": "Add Transaction",
+    "@addTPTitle": {
+        "description": "Text for the app bar title of Add Transaction Page"
+    },
+
+    "addTPUTitle": "Update Transaction",
+    "@addTPUTitle": {
+        "description": "Text for the app bar title of Add Transaction Update Variant Page"
+    },
+
+    "amountSpent": "Amount Spent",
+    "@amountSpent": {
+        "description": "Text for Heading Amount Spent"
+    },
+
+    "currency": "PKR",
+    "@currency": {},
+
+    "selectCategory": "SELECT CATEGORY",
+    "@selectCategory": {},
+
+    "saveTransaction": "Save Transaction",
+    "@saveTransaction": {},
+
+    "food": "Food",
+    "@food": {},
+
+    "transit": "Transit",
+    "@transit": {},
+
+    "shop": "Shop",
+    "@shop": {},
+
+    "bills": "Bills",
+    "@bills": {},
+
+    "entertainment": "Entertainment",
+    "@entertainment": {},
+
+    "health": "Health",
+    "@health": {},
+
+    "home": "Home",
+    "@home": {},
+
+    "edu": "Education",
+    "@edu": {},
+
+    "week": "Week",
+    "@week": {},
+
+    "month": "Month",
+    "@month": {},
+    
+    "year": "Year",
+    "@year": {},
+    
+    "budget": "Budget",
+    "@budget": {},
+
+    "errorRetrieving": "Error Retrieving Data",
+    "@errorRetrieving": {},
+
+    "budgetHeading": "By Category",
+    "@budgetHeading": {},
+
+    "budgetButton": "Update Your Budget",
+    "@budgetButton": {},
+
+    "profile": "Profile",
+    "@profile": {},
+
+    "emptyLogin": "Please fill email and password fields.",
+    "@emptyLogin": {},
+
+    "loginLoad": "Logging you in...",
+    "@loginLoad": {},
+
+    "userNotFound": "No user found for that email.",
+    "@userNotFound": {},
+
+    "wrongPassword": "Wrong password provided for that user.",
+    "@wrongPassword": {},
+
+    "invalidEmail": "Provided email is invalid.",
+    "@invalidEmail": {},
+
+    "userDisabled": "The user account has been disabled.",
+    "@userDisabled": {},
+
+    "invalidCredential": "The supplied credentials are incorrect.",
+    "@invalidCredential": {},
+
+    "networkError": "Network Error",
+    "@networkError": {},
+
+    "allEmpty": "Please fill all the fields.",
+    "@allEmpty": {},
+
+    "creatingAccount": "Creating your account...",
+    "@creatingAccount": {},
+
+    "emailUsed": "The provided email is already in use.",
+    "@emailUsed": {},
+
+    "weakPass": "The password provided is too weak.",
+    "@weakPass": {},
+
+    "uploadingError": "Upload Failed",
+    "@uploadingError": {},
+
+    "uploading": "Uploading your data...",
+    "@uploading": {},
+
+    "downloadingError": "Download Failed",
+    "@downloadingError": {},
+
+    "downloading": "Downloading cloud backup...",
+    "@downloading": {},
+
+    "signOut": "Sign Out",
+    "@signOut": {},
+
+    "welcomeMessage": "Welcome, User\nPlease Add your Name to continue",
+    "@welcomeMessage": {},
+
+    "continueBtn": "Continue",
+    "@continueBtn": {},
+
+    "user": "User",
+    "@user": {},
+
+    "welcome": "Welcome",
+    "@welcome": {},
+
+    "uploadMsg": "Upload your Data",
+    "@uploadMsg": {},
+
+    "upload": "Upload",
+    "@upload": {},
+
+    "downloadMsg": "Download your Data",
+    "@downloadMsg": {},
+
+    "download": "Download",
+    "@download": {},
+
+    "overBudgetMessage": "You're assigned budgets are PKR {amount} above the total monthly budget",
+    "@overBudgetMessage": {
+        "placeholders": {
+            "amount": {
+                "type": "String",
+                "example": "2314.32"
+            }
+        }
+    },
+
+    "setBudget": "Set Budget",
+    "@setBudget": {},
+
+    "monthlyBudget": "Monthly Budget",
+    "@monthlyBudget": {},
+
+    "statistics": "Statistics",
+    "@statistics": {},
+
+    "noDataYet": "No Data Yet",
+    "@noDataYet": {},
+
+    "topCategories": "Top Categories",
+    "@topCategories": {},
+
+    "allTransactions": "All Transactions",
+    "@allTransactions": {},
+
+    "searchHint": "Search transactions...",
+    "@searchHint": {},
+
+    "filterTabs": "{count, select, 1{Expense} 2{Income} 3{Food} 4{Transit} 5{Shop} 6{Bills} 7{Entertainment} 8{Health} 9{Home} 10{Education} other{All}}",
+    "@filterTabs": {
+        "description": "Filter Tab Names",
+        "placeholders": {
+            "count": {
+              "type": "String",
+              "example": "1" 
+            }
+        }
+    },
+
+    "ofText": "OF",
+    "@ofText": {},
+
+    "remaining": "REMAINING",
+    "@remaining": {},
+
+    "budgetExceeded": "Exceeded budget by",
+    "@budgetExceeded": {},
+
+    "setYourBudget": "Set Your Budget",
+    "@setYourBudget": {},
+
+    "name": "Name",
+    "@name": {},
+
+    "email": "Email",
+    "@email": {},
+
+    "password": "Password",
+    "@password": {},
+
+    "login": "Login",
+    "@login": {},
+
+    "signUp": "Sign Up",
+    "@signUp": {},
+
+    "emptyStateMessage": "No Transactions made yet",
+    "@emptyStateMessage": {},
+
+    "transactions": "Transactions",
+    "@transactions": {},
+
+    "viewAll": "View All",
+    "@viewAll": {},
+
+    "totalMonthlyBudget": "TOTAL MONTHLY BUDGET",
+    "@totalMonthlyBudget": {},
+
+    "spent": "SPENT",
+    "@spent": {},
+
+    "left": "LEFT",
+    "@left": {},
+
+    "spendingFlow": "Spending Flow",
+    "@spendingFlow": {},
+
+    "spending": "Spending",
+    "@spending": {},
+
+    "today": "TODAY",
+    "@today": {},
+
+    "yesturday": "YESTERDAY",
+    "@yesturday": {},
+
+    "googleLogin": "Signing in with Google",
+    "@googleLogin": {},
+
+    "errorGoogleLogin": "Google Sign-In failed.",
+    "@errorGoogleLogin": {},
+
+    "settings": "Settings",
+    "@settings": {},
+
+    "screenMode": "Screen Mode",
+    "@screenMode": {},
+
+    "light": "Light",
+    "@light": {},
+
+    "dark": "Dark",
+    "@dark": {},
+
+    "language": "Language",
+    "@language": {},
+
+    "or": "OR",
+    "@or": {},
+
+    "googleBtn": "Sign in with Google",
+    "@googleBtn": {},
+
+    "delete": "Delete",
+    "@delete": {},
+
+    "warning": "Warning!",
+    "@warning": {},
+
+    "userMismatch": "Provided Credentials Do NOT Match User's Credentials",
+    "@userMismatch": {},
+
+    "deleting": "Deleting Account...",
+    "@deleting": {},
+
+    "deleteMsg": "You are going to DELETE your account which will delete all data in the cloud (Note: This does not affect your current local data). If you are sure about this action enter your credentials below.",
+    "@deleteMsg": {}
+}
